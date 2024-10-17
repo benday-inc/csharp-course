@@ -1,7 +1,3 @@
-Here’s a **course outline for "Programming with C# using Visual Studio Code"**. It’s designed to take students from beginner-level concepts to more advanced topics, with an emphasis on using **Visual Studio Code (VS Code)** and modern C# practices.
-
----
-
 # **Course Outline: Programming with C# Using Visual Studio Code**
 
 ## **Module 1: Getting Started with C# and Visual Studio Code**
