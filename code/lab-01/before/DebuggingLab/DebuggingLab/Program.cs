@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Linq;
-using System.Numerics;
-using System.Runtime.Intrinsics.X86;
-using System.Threading;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DebuggingLab;
 
@@ -19,8 +12,13 @@ class Program
 
         var tasks = new[]
         {
-            Task.Run(() => SimulateUserProcessing("User1", new[] { "ItemA", "ItemB" })),
-            Task.Run(() => SimulateUserProcessing("User2", new[] { "ItemX", "ItemY" }))
+            Task.Run(() => SimulateUserProcessing("User1", new[] { "ItemA", "ItemB", "ItemC", "ItemD" })),
+            Task.Run(() => SimulateUserProcessing("User2", new[] { "ItemX", "ItemY", "ItemZ", "Item1234" })),
+            Task.Run(() => SimulateUserProcessing("User3", new[] { "ItemM", "ItemN", "ItemO", "ItemP" })),
+            Task.Run(() => SimulateUserProcessing("User4", new[] { "ItemE", "ItemF", "ItemG", "ItemH" })),
+            Task.Run(() => SimulateUserProcessing("User5", new[] { "ItemE", "ItemF", "ItemG", "ItemH" })),
+            Task.Run(() => SimulateUserProcessing("User6", new[] { "ItemX", "ItemY", "ItemX1", "ItemY2" })),
+            Task.Run(() => SimulateUserProcessing("User7", new[] { "ItemL", "ItemU", "ItemZxcxzcv" })),
         };
         Task.WaitAll(tasks);
         Console.WriteLine("Simulation complete.");
@@ -33,7 +31,7 @@ class Program
         var processor = new DataProcessor(userId);
         processor.ProcessData(items);
 
-        Thread.Sleep(new Random().Next(10, 100));
+        Thread.Sleep(new Random().Next(100, 1000));
 
         var processedItems = processor.GetProcessedData();
         Console.WriteLine($"[{ Thread.CurrentThread.ManagedThreadId}] { userId}'s Processed Data: { string.Join(", ", processedItems)}");
