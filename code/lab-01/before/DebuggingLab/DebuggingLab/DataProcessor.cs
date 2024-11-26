@@ -7,8 +7,8 @@ namespace DebuggingLab;
 class DataProcessor
 {
     private readonly string _userId;
-    private static readonly Dictionary<string, List<string>> _cache = new();
-    private static List<string>? _currentCache;
+    private static readonly Dictionary<string, ProcessedData> _cache = new();
+    private static ProcessedData? _currentCache;
 
     public DataProcessor(string userId)
     {
@@ -19,7 +19,10 @@ class DataProcessor
     {
         if (_currentCache == null)
         {
-            _currentCache = new List<string>();
+            _currentCache = new ProcessedData()
+            {
+                Username = _userId
+            };
         }
                 
         _cache.Add(_userId, _currentCache);
@@ -27,7 +30,7 @@ class DataProcessor
         foreach (var item in data)
         {
             Thread.Sleep(new Random().Next(100, 500));
-            _currentCache.Add($"{_userId}-{item}");
+            _currentCache.Data.Add($"{_userId}-{item}");
         }
     }
 
@@ -35,7 +38,7 @@ class DataProcessor
     {
         if (_cache.TryGetValue(_userId, out var processedData))
         {
-            return processedData.ToArray();
+            return processedData.Data.ToArray();
         }
         Console.WriteLine($"[{Thread.CurrentThread.ManagedThreadId}] Warning: No data found for {_userId}. Returning empty array.");
         return Array.Empty<string>();
