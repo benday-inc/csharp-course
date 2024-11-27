@@ -7,8 +7,9 @@ namespace DebuggingLab;
 class DataProcessor
 {
     private readonly string _userId;
-    private static readonly Dictionary<string, ProcessedData> _cache = new();
-    private static ProcessedData? _currentCache;
+    private static readonly ConcurrentDictionary<string, ProcessedData> _cache = new();
+    private static ProcessedData? _userData;
+    private static readonly object _lock = new();
 
     public DataProcessor(string userId)
     {
@@ -17,30 +18,59 @@ class DataProcessor
 
     public void ProcessData(string[] data)
     {
-        if (_currentCache == null)
-        {
-            _currentCache = new ProcessedData()
-            {
-                Username = _userId
-            };
-        }
-                
-        _cache.Add(_userId, _currentCache);
+        PopulateDataCacheForUser(_userId);
 
-        foreach (var item in data)
+        if (_userData == null)
         {
-            Thread.Sleep(new Random().Next(100, 500));
-            _currentCache.Data.Add($"{_userId}-{item}");
+            return;
+        }
+        else
+        {
+            EnsureDataCacheIsSaved(_userId, _userData);
+
+            foreach (var item in data)
+            {
+                Thread.Sleep(new Random().Next(100, 500));
+
+                _userData.Data.Add($"{_userId}-{item}");
+            }
+        }
+
+    }
+
+    private static void PopulateDataCacheForUser(string userId)
+    {
+        lock (_lock)
+        {
+            if (_userData == null)
+            {
+                _cache.Clear();
+                _userData = new ProcessedData()
+                {
+                    Username = userId
+                };
+            }
+        }
+    }
+
+    private static void EnsureDataCacheIsSaved(string userId, ProcessedData data)
+    {
+        if (_cache.ContainsKey(userId) == false)
+        {
+            _cache.TryAdd(userId, data);
         }
     }
 
     public string[] GetProcessedData()
     {
-        if (_cache.TryGetValue(_userId, out var processedData))
+        lock (_lock)
         {
-            return processedData.Data.ToArray();
+            if (_cache.TryGetValue(_userId, out var processedData))
+            {
+                return processedData.Data.ToArray();
+            }
+            Console.WriteLine($"[{Thread.CurrentThread.ManagedThreadId}] Warning: No data found for {_userId}. Returning empty array.");
+            return Array.Empty<string>();
         }
-        Console.WriteLine($"[{Thread.CurrentThread.ManagedThreadId}] Warning: No data found for {_userId}. Returning empty array.");
-        return Array.Empty<string>();
     }
 }
