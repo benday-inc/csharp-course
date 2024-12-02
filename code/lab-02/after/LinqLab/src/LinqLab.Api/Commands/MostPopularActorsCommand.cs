@@ -1,0 +1,61 @@
+using Benday.CommandsFramework;
+
+namespace LinqLab.Api.Commands;
+
+[Command(Name = "popular",
+    Description = "Get a list of the most popular actors")]
+public class MostPopularActorsCommand : SynchronousCommand
+{
+    public MostPopularActorsCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider) :
+        base(info, outputProvider)
+    {
+
+    }
+
+    public override ArgumentCollection GetArguments()
+    {
+        var args = new ArgumentCollection();
+
+        args.AddString("decades")
+            .AsNotRequired()
+            .WithDescription(
+                "Decades to load separated by comma. Defaults to '2010,2020'")
+            .WithDefaultValue("2010,2020");
+
+        args.AddInt32("rows")
+            .AsNotRequired()
+            .WithDescription(
+                "Maximum number of results to return. Default is 20.")
+            .WithDefaultValue(20);
+
+        return args;
+    }
+
+    protected override void OnExecute()
+    {
+        var decadesAsString = Arguments.GetStringValue("decades");
+        var decades = Utilities.CommaSeparatedValuesToIntArray(decadesAsString);
+
+        var rows = Arguments.GetInt32Value("rows");
+
+        var reader = new MovieDataReader();
+
+        var movies = reader.GetMovies(decades);
+
+        WriteLine($"Found {movies.Count} movies.");
+
+        var actors = GetMostPopularActors(movies, rows);
+
+        WriteLine($"Actor Name | # of Movies");
+
+        foreach (var item in actors)
+        {
+            WriteLine($"{item.Name} ({item.MovieCount})");
+        }
+    }
+
+    private ActorInfo[] GetMostPopularActors(List<Movie> movies, int rows)
+    {
+        throw new NotImplementedException();
+    }   
+}
