@@ -22,14 +22,23 @@ public class ListMoviesCommand : SynchronousCommand
                 "Decades to load separated by comma. Defaults to '2010,2020'")
             .WithDefaultValue("2010,2020");
 
+        args.AddString("sort")
+            .AsNotRequired()
+            .WithDescription(
+                "Sort by field name. Valid values are 'title', 'year', 'genre'. Multiple values can be used via comma separated values. Direction using 'asc' or 'desc'")
+            .WithDefaultValue(string.Empty);
+
         return args;
     }
 
     protected override void OnExecute()
     {
         var decadesAsString = Arguments.GetStringValue("decades");
-
         var decades = Utilities.CommaSeparatedValuesToIntArray(decadesAsString);
+
+        var sorts =
+            Utilities.CommaSeparatedValuesToSearchArguments(
+                Arguments.GetStringValue("sort"));
 
         var reader = new MovieDataReader();
 
@@ -37,9 +46,22 @@ public class ListMoviesCommand : SynchronousCommand
 
         WriteLine($"Found {movies.Count} movies.");
 
-        foreach (var movie in movies)
+        if (sorts.Length == 0)
         {
-            WriteLine(movie.ToString());
+            foreach (var movie in movies)
+            {
+                WriteLine(movie.ToString());
+            }
         }
+        else
+        {
+            var sortedMovies = Sort(movies, sorts);
+        }
+    }
+
+    private IEnumerable<Movie> Sort(
+        List<Movie> movies, SearchArgument[] sorts)
+    {
+        throw new NotImplementedException();
     }
 }

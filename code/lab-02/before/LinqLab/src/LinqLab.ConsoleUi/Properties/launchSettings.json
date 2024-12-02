@@ -7,6 +7,10 @@
     "list": {
       "commandName": "Project",
       "commandLineArgs": "list"
+    },
+    "list sorted by name desc": {
+      "commandName": "Project",
+      "commandLineArgs": "list /sort:\"name desc\""
     }
   }
 }
