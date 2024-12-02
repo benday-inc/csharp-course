@@ -13,12 +13,12 @@ Learn how to measure code coverage, identify gaps in testing, and improve test q
 ### Step 1: Enable Code Coverage in Visual Studio
 1. Open Visual Studio.
 2. Ensure the **Test** menu has the option **Analyze Code Coverage for All Tests**:
-   - If not using Visual Studio Enterprise, install **Coverlet** via NuGet in the `CalculatorApp.Tests` project.
+   - If not using Visual Studio Enterprise, install **Coverlet** via NuGet in the `NunitLab.UnitTests` project.
 
 > ![Screenshot Placeholder: Visual Studio showing Code Coverage option]
 
 ### Step 2: Analyze Code Coverage for `BankAccount`
-1. Run all tests in the `CalculatorApp.Tests` project.
+1. Run all tests in the `NunitLab.UnitTests` project.
 2. Analyze code coverage by selecting **Test** > **Analyze Code Coverage**.
 3. Review the report and identify any uncovered methods in the `BankAccount` class.
 

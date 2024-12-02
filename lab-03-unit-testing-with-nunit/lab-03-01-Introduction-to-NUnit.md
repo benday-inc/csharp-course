@@ -12,18 +12,18 @@ Set up a basic NUnit project and write simple tests.
 
 ### Step 1: Set Up the Project
 1. Open Visual Studio and create a new **Class Library (.NET)** project.
-2. Name the project `CalculatorApp`.
+2. Name the project `NunitLab`.
 3. Add a second project to the solution for unit tests:
    - Right-click on the solution in **Solution Explorer**, choose **Add** > **New Project**.
-   - Select **Unit Test Project (.NET)** and name it `CalculatorApp.Tests`.
+   - Select **Unit Test Project (.NET)** and name it `NunitLab.UnitTests`.
 4. Add a reference to the main project from the test project:
-   - Right-click on `CalculatorApp.Tests`, choose **Add** > **Project Reference**.
-   - Select `CalculatorApp` and click **OK**.
+   - Right-click on `NunitLab.UnitTests`, choose **Add** > **Project Reference**.
+   - Select `NunitLab` and click **OK**.
 
 > ![Screenshot Placeholder: Solution setup with two projects in Solution Explorer]
 
 ### Step 2: Install NUnit
-1. In the `CalculatorApp.Tests` project, open the **NuGet Package Manager**:
+1. In the `NunitLab.UnitTests` project, open the **NuGet Package Manager**:
    - Right-click on the project, choose **Manage NuGet Packages**.
 2. Search for and install the following packages:
    - **NUnit**
@@ -32,9 +32,9 @@ Set up a basic NUnit project and write simple tests.
 > ![Screenshot Placeholder: Installing NUnit in NuGet Package Manager]
 
 ### Step 3: Implement a Simple Calculator
-1. In the `CalculatorApp` project, create a class called `Calculator.cs`:
+1. In the `NunitLab` project, create a class called `Calculator.cs`:
    ```csharp
-   namespace CalculatorApp
+   namespace NunitLab
    {
        public class Calculator
        {
@@ -47,12 +47,12 @@ Set up a basic NUnit project and write simple tests.
    ```
 
 ### Step 4: Write Unit Tests
-1. In the `CalculatorApp.Tests` project, create a new test class `CalculatorTests.cs`:
+1. In the `NunitLab.UnitTests` project, create a new test class `CalculatorTests.cs`:
    ```csharp
    using NUnit.Framework;
-   using CalculatorApp;
+   using NunitLab;
 
-   namespace CalculatorApp.Tests
+   namespace NunitLab.UnitTests
    {
        [TestFixture]
        public class CalculatorTests

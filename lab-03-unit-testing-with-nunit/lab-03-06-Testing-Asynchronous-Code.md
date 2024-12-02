@@ -11,12 +11,12 @@ Learn how to write unit tests for asynchronous methods using NUnit.
 ## Instructions
 
 ### Step 1: Create an AsyncFileProcessor Class
-1. In the `CalculatorApp` project, create a new class `AsyncFileProcessor.cs`:
+1. In the `NunitLab` project, create a new class `AsyncFileProcessor.cs`:
    ```csharp
    using System.IO;
    using System.Threading.Tasks;
 
-   namespace CalculatorApp
+   namespace NunitLab
    {
        public class AsyncFileProcessor
        {
@@ -41,14 +41,14 @@ Learn how to write unit tests for asynchronous methods using NUnit.
 > ![Screenshot Placeholder: AsyncFileProcessor class implementation]
 
 ### Step 2: Write Unit Tests for AsyncFileProcessor
-1. In the `CalculatorApp.Tests` project, create a new test class `AsyncFileProcessorTests.cs`:
+1. In the `NunitLab.UnitTests` project, create a new test class `AsyncFileProcessorTests.cs`:
    ```csharp
    using System.IO;
    using System.Threading.Tasks;
    using NUnit.Framework;
-   using CalculatorApp;
+   using NunitLab;
 
-   namespace CalculatorApp.Tests
+   namespace NunitLab.UnitTests
    {
        [TestFixture]
        public class AsyncFileProcessorTests

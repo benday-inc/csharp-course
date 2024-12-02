@@ -11,9 +11,9 @@ Learn how to use advanced mocking techniques, such as callbacks, to test classes
 ## Instructions
 
 ### Step 1: Create an IShippingService and OrderProcessor Classes
-1. In the `CalculatorApp` project, update or create an interface `IShippingService.cs`:
+1. In the `NunitLab` project, update or create an interface `IShippingService.cs`:
    ```csharp
-   namespace CalculatorApp
+   namespace NunitLab
    {
        public interface IShippingService
        {
@@ -24,7 +24,7 @@ Learn how to use advanced mocking techniques, such as callbacks, to test classes
 
 2. Extend the `OrderProcessor` class to use the `IShippingService`:
    ```csharp
-   namespace CalculatorApp
+   namespace NunitLab
    {
        public class OrderProcessor
        {
@@ -54,13 +54,13 @@ Learn how to use advanced mocking techniques, such as callbacks, to test classes
 > ![Screenshot Placeholder: Updated OrderProcessor with IShippingService]
 
 ### Step 2: Write Tests with Callback Mocking
-1. In the `CalculatorApp.Tests` project, update the `OrderProcessorTests.cs` file:
+1. In the `NunitLab.UnitTests` project, update the `OrderProcessorTests.cs` file:
    ```csharp
    using Moq;
    using NUnit.Framework;
-   using CalculatorApp;
+   using NunitLab;
 
-   namespace CalculatorApp.Tests
+   namespace NunitLab.UnitTests
    {
        [TestFixture]
        public class OrderProcessorTests

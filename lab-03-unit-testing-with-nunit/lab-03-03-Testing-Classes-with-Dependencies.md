@@ -6,14 +6,14 @@ Learn how to test classes that depend on other services by using mocking framewo
 
 ## Prerequisites
 - Completion of **Lab 2** or familiarity with basic NUnit tests and exception handling.
-- NuGet package for Moq installed in the `CalculatorApp.Tests` project.
+- NuGet package for Moq installed in the `NunitLab.UnitTests` project.
 
 ## Instructions
 
 ### Step 1: Create the `IEmailService` and `OrderProcessor` Classes
-1. In the `CalculatorApp` project, create a new interface `IEmailService.cs`:
+1. In the `NunitLab` project, create a new interface `IEmailService.cs`:
    ```csharp
-   namespace CalculatorApp
+   namespace NunitLab
    {
        public interface IEmailService
        {
@@ -24,7 +24,7 @@ Learn how to test classes that depend on other services by using mocking framewo
 
 2. Create a new class `OrderProcessor.cs` that uses `IEmailService`:
    ```csharp
-   namespace CalculatorApp
+   namespace NunitLab
    {
        public class OrderProcessor
        {
@@ -51,7 +51,7 @@ Learn how to test classes that depend on other services by using mocking framewo
 > ![Screenshot Placeholder: Interface and OrderProcessor implementation]
 
 ### Step 2: Add Tests for `OrderProcessor`
-1. In the `CalculatorApp.Tests` project, install the Moq NuGet package:
+1. In the `NunitLab.UnitTests` project, install the Moq NuGet package:
    - Right-click on the project, choose **Manage NuGet Packages**.
    - Search for and install **Moq**.
 
@@ -59,9 +59,9 @@ Learn how to test classes that depend on other services by using mocking framewo
    ```csharp
    using Moq;
    using NUnit.Framework;
-   using CalculatorApp;
+   using NunitLab;
 
-   namespace CalculatorApp.Tests
+   namespace NunitLab.UnitTests
    {
        [TestFixture]
        public class OrderProcessorTests

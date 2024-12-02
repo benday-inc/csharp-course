@@ -11,9 +11,9 @@ Learn how to use NUnit’s parameterized and data-driven test features to test m
 ## Instructions
 
 ### Step 1: Add a Discount Calculator Class
-1. In the `CalculatorApp` project, create a new class `DiscountCalculator.cs`:
+1. In the `NunitLab` project, create a new class `DiscountCalculator.cs`:
    ```csharp
-   namespace CalculatorApp
+   namespace NunitLab
    {
        public class DiscountCalculator
        {
@@ -34,12 +34,12 @@ Learn how to use NUnit’s parameterized and data-driven test features to test m
 > ![Screenshot Placeholder: DiscountCalculator implementation]
 
 ### Step 2: Write Parameterized Tests
-1. In the `CalculatorApp.Tests` project, create a new test class `DiscountCalculatorTests.cs`:
+1. In the `NunitLab.UnitTests` project, create a new test class `DiscountCalculatorTests.cs`:
    ```csharp
    using NUnit.Framework;
-   using CalculatorApp;
+   using NunitLab;
 
-   namespace CalculatorApp.Tests
+   namespace NunitLab.UnitTests
    {
        [TestFixture]
        public class DiscountCalculatorTests

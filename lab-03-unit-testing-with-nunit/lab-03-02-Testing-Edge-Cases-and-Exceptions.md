@@ -11,7 +11,7 @@ Learn how to test edge cases and handle exceptions using NUnit.
 ## Instructions
 
 ### Step 1: Extend the Calculator Class
-1. Open the `Calculator.cs` file in the `CalculatorApp` project.
+1. Open the `Calculator.cs` file in the `NunitLab` project.
 2. Modify the `Divide` method to handle division by zero:
    ```csharp
    public int Divide(int a, int b)
@@ -24,7 +24,7 @@ Learn how to test edge cases and handle exceptions using NUnit.
 > ![Screenshot Placeholder: Updated `Divide` method in the Calculator class]
 
 ### Step 2: Write Tests for Edge Cases
-1. Open the `CalculatorTests.cs` file in the `CalculatorApp.Tests` project.
+1. Open the `CalculatorTests.cs` file in the `NunitLab.UnitTests` project.
 2. Add the following tests to handle edge cases:
    ```csharp
    [Test]

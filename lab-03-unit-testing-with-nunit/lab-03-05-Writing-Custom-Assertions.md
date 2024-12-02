@@ -11,9 +11,9 @@ Learn how to create and use custom assertions to improve test clarity and reuse.
 ## Instructions
 
 ### Step 1: Create the BankAccount Class
-1. In the `CalculatorApp` project, create a new class `BankAccount.cs`:
+1. In the `NunitLab` project, create a new class `BankAccount.cs`:
    ```csharp
-   namespace CalculatorApp
+   namespace NunitLab
    {
        public class BankAccount
        {
@@ -51,12 +51,12 @@ Learn how to create and use custom assertions to improve test clarity and reuse.
 > ![Screenshot Placeholder: BankAccount class implementation]
 
 ### Step 2: Add Tests for BankAccount
-1. In the `CalculatorApp.Tests` project, create a new test class `BankAccountTests.cs`:
+1. In the `NunitLab.UnitTests` project, create a new test class `BankAccountTests.cs`:
    ```csharp
    using NUnit.Framework;
-   using CalculatorApp;
+   using NunitLab;
 
-   namespace CalculatorApp.Tests
+   namespace NunitLab.UnitTests
    {
        [TestFixture]
        public class BankAccountTests
@@ -89,11 +89,11 @@ Learn how to create and use custom assertions to improve test clarity and reuse.
 > ![Screenshot Placeholder: Basic BankAccount test methods]
 
 ### Step 3: Write Custom Assertions
-1. Create a helper class `BankAccountAssertions.cs` in the `CalculatorApp.Tests` project:
+1. Create a helper class `BankAccountAssertions.cs` in the `NunitLab.UnitTests` project:
    ```csharp
    using NUnit.Framework;
 
-   namespace CalculatorApp.Tests
+   namespace NunitLab.UnitTests
    {
        public static class BankAccountAssertions
        {
