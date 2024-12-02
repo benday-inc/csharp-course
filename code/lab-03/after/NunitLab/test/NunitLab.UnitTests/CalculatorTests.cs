@@ -87,6 +87,22 @@ public class CalculatorTests
         // assert
         Assert.That(actual, Is.EqualTo(expected));
     }
+
+    [Test]
+    public void Divide_WhenDividingByZero_ShouldThrowDivideByZeroException()
+    {
+        Assert.Throws<DivideByZeroException>(() => SystemUnderTest.Divide(10, 0));
+    }
+
+    [TestCase(0, 10, 0)]
+    [TestCase(10, 2, 5)]
+    [TestCase(-10, 2, -5)]
+    public void Divide_ShouldReturnCorrectQuotient(int a, int b, int expected)
+    {
+        var actual = SystemUnderTest.Divide(a, b);
+
+        Assert.That(actual, Is.EqualTo(expected));
+    }
 }
 
 
