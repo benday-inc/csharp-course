@@ -46,6 +46,12 @@ public class ListMoviesCommand : SynchronousCommand
                 "Filter by title")
             .WithDefaultValue(string.Empty);
 
+        args.AddInt32("rows")
+            .AsNotRequired()
+            .WithDescription(
+                "Maximum number of results to return")
+            .WithDefaultValue(-1);
+
         return args;
     }
 
@@ -57,6 +63,7 @@ public class ListMoviesCommand : SynchronousCommand
         var genre = Arguments.GetStringValue("genre");
         var title = Arguments.GetStringValue("title");
         var year = Arguments.GetInt32Value("year");
+        var numberOfRows = Arguments.GetInt32Value("rows");
 
         var sorts =
             Utilities.CommaSeparatedValuesToSearchArguments(
@@ -85,6 +92,11 @@ public class ListMoviesCommand : SynchronousCommand
 
         if (sorts.Length == 0)
         {
+            if (numberOfRows != -1)
+            {
+                movies = FilterByNumberOfRows(movies, numberOfRows);
+            }
+
             foreach (var movie in movies)
             {
                 WriteLine(movie.ToString());
@@ -92,15 +104,31 @@ public class ListMoviesCommand : SynchronousCommand
         }
         else
         {
-            var sortedMovies = Sort(movies, sorts);
+            var sortedMovies = SortMovies(movies, sorts);
+
+            if (numberOfRows != -1)
+            {
+                movies = FilterByNumberOfRows(movies, numberOfRows);
+            }
+
+            foreach (var movie in movies)
+            {
+                WriteLine(movie.ToString());
+            }
         }
     }
+
+    private List<Movie> FilterByNumberOfRows(List<Movie> movies, int numberOfRows)
+    {
+        throw new NotImplementedException();
+    }
+
     private List<Movie> FilterByGenre(List<Movie> movies, string genre)
     {
         throw new NotImplementedException();
     }
 
-    private IEnumerable<Movie> Sort(
+    private IEnumerable<Movie> SortMovies(
         List<Movie> movies, SearchArgument[] sorts)
     {
         throw new NotImplementedException();
