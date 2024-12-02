@@ -6,7 +6,6 @@ Learn how to test edge cases and handle exceptions using NUnit.
 
 ## Prerequisites
 - Completion of **Lab 1** or familiarity with basic NUnit tests.
-- Basic understanding of exceptions in C#.
 
 ## Instructions
 
@@ -21,7 +20,7 @@ Learn how to test edge cases and handle exceptions using NUnit.
    }
    ```
 
-> ![Screenshot Placeholder: Updated `Divide` method in the Calculator class]
+<img src="image-20241202163111013.png" alt="image-20241202163111013" style="zoom:50%;" />
 
 ### Step 2: Write Tests for Edge Cases
 1. Open the `CalculatorTests.cs` file in the `NunitLab.UnitTests` project.
@@ -30,19 +29,20 @@ Learn how to test edge cases and handle exceptions using NUnit.
    [Test]
    public void Divide_WhenDividingByZero_ShouldThrowDivideByZeroException()
    {
-       Assert.Throws<DivideByZeroException>(() => _calculator.Divide(10, 0));
+       Assert.Throws<DivideByZeroException>(() => SystemUnderTest.Divide(10, 0));
    }
-
+   
    [TestCase(0, 10, 0)]
    [TestCase(10, 2, 5)]
    [TestCase(-10, 2, -5)]
    public void Divide_ShouldReturnCorrectQuotient(int a, int b, int expected)
    {
-       Assert.AreEqual(expected, _calculator.Divide(a, b));
+       var actual = SystemUnderTest.Divide(a, b);
+       Assert.That(actual, Is.EqualTo(expected));
    }
    ```
 
-> ![Screenshot Placeholder: Edge case test methods in Visual Studio editor]
+<img src="image-20241202163440499.png" alt="image-20241202163440499" style="zoom:50%;" />
 
 ### Step 3: Run the Tests
 1. Open the **Test Explorer** in Visual Studio.
@@ -50,7 +50,7 @@ Learn how to test edge cases and handle exceptions using NUnit.
    - The division by zero test throws the correct exception.
    - The parameterized tests for valid input pass successfully.
 
-> ![Screenshot Placeholder: Test Explorer showing passing tests for edge cases]
+<img src="image-20241202163529881.png" alt="image-20241202163529881" style="zoom:50%;" />
 
 ## Outcome
 Students will:
