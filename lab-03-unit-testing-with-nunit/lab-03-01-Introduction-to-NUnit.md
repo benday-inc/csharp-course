@@ -20,8 +20,6 @@ Set up a basic NUnit project and write simple tests.
    - Right-click on `NunitLab.UnitTests`, choose **Add** > **Project Reference**.
    - Select `NunitLab` and click **OK**.
 
-> ![Screenshot Placeholder: Solution setup with two projects in Solution Explorer]
-
 ### Step 2: Install NUnit
 1. In the `NunitLab.UnitTests` project, open the **NuGet Package Manager**:
    - Right-click on the project, choose **Manage NuGet Packages**.
@@ -29,7 +27,7 @@ Set up a basic NUnit project and write simple tests.
    - **NUnit**
    - **NUnit3TestAdapter**
 
-> ![Screenshot Placeholder: Installing NUnit in NuGet Package Manager]
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-03-unit-testing-with-nunit/image-20241202143441661.png" alt="image-20241202143441661" style="zoom:50%;" />
 
 ### Step 3: Implement a Simple Calculator
 1. In the `NunitLab` project, create a class called `Calculator.cs`:
@@ -51,38 +49,38 @@ Set up a basic NUnit project and write simple tests.
    ```csharp
    using NUnit.Framework;
    using NunitLab;
-
+   
    namespace NunitLab.UnitTests
    {
        [TestFixture]
        public class CalculatorTests
        {
            private Calculator _calculator;
-
+   
            [SetUp]
            public void Setup()
            {
                _calculator = new Calculator();
            }
-
+   
            [Test]
            public void Add_ShouldReturnCorrectSum()
            {
                Assert.AreEqual(5, _calculator.Add(2, 3));
            }
-
+   
            [Test]
            public void Subtract_ShouldReturnCorrectDifference()
            {
                Assert.AreEqual(1, _calculator.Subtract(3, 2));
            }
-
+   
            [Test]
            public void Multiply_ShouldReturnCorrectProduct()
            {
                Assert.AreEqual(6, _calculator.Multiply(2, 3));
            }
-
+   
            [Test]
            public void Divide_ShouldReturnCorrectQuotient()
            {

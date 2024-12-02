@@ -12,7 +12,7 @@ In this lab, you will debug a multithreaded C# application that contains a bug..
 2. Open the **DebuggingLab.sln** solution file
 3. In **Solution Explorer** you should see a project with three classes that looks similar to the image below
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241126162813626.png" alt="image-20241126162813626" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241126162813626-3168185.png" alt="image-20241126162813626" style="zoom:50%;" />
 
 We're trying to fix some data processing code that someone else wrote and something strange is happening.  The processed data should be organized by user but instead it's coming out as a jumbled mess. And sometimes it throws exceptions, too.
 
@@ -37,7 +37,7 @@ We're trying to fix some data processing code that someone else wrote and someth
      ```
 
 We're seeing data from both users when we should only be seeing output from a single user.  **What's going on?**
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241126163505731.png" alt="image-20241126163505731" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241126163505731-3168185.png" alt="image-20241126163505731" style="zoom:50%;" />
 
 —
 
@@ -54,20 +54,20 @@ This is going to be a pretty basic demo of adding a breakpoint to a line and vie
    
    
    
-   ![image-20241127084354635](/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127084354635.png)
+   ![image-20241127084354635](/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127084354635-3168185.png)
    
 2. Run the program in debug mode (`F5`).
 3. When the breakpoint hits, let's inspect the values in the Autos window for:
    - The value of `_userId`
    - The contents of `_userData.Data`
    
-   <img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127084657668.png" alt="image-20241127084657668" style="zoom:50%;" />
+   <img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127084657668-3168185.png" alt="image-20241127084657668" style="zoom:50%;" />
 
-   <img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127084721655.png" alt="image-20241127084721655" style="zoom:50%;" />
+   <img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127084721655-3168185.png" alt="image-20241127084721655" style="zoom:50%;" />
    
 4. If the Autos window is not visible, you can open it by going to **Debug | Windows | Autos**:
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241126154347555.png" alt="image-20241126154347555" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241126154347555-3168185.png" alt="image-20241126154347555" style="zoom:50%;" />
 
 5. Press **F5** to continue execution. 
 6. The breakpoint should get hit a another time...and again...and again...  
@@ -83,15 +83,15 @@ Let's assume that you've seen enough of this breakpoint.  You could clear it &da
 
 9. Right-click on **Line 24** and select **Run To Cursor Ignoring Breakpoints** from the context menu
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127085651206.png" alt="image-20241127085651206" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127085651206-3168185.png" alt="image-20241127085651206" style="zoom:50%;" />
 
 10. Adding **Run To Cursor Ignoring Breakpoints** essentially adds a temporary line breakpoint. Execution should be paused and you should now be on **Line 24**
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127085853307.png" alt="image-20241127085853307" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127085853307-3168185.png" alt="image-20241127085853307" style="zoom:50%;" />
 
 11. Press **F5** or click **Continue** to resume execution
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127090011723.png" alt="image-20241127090011723" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127090011723-3168185.png" alt="image-20241127090011723" style="zoom:50%;" />
 
 
 
@@ -106,7 +106,7 @@ At this point, we haven't figured much out regarding our bug.  It's still a myst
 
 Below is a class diagram of the sample project.  When **DataProcessor** is processing data for a user, it records the data that's been processed in the **ProcessedData** class.  
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127094245308.png" alt="image-20241127094245308" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127094245308-3168185.png" alt="image-20241127094245308" style="zoom:50%;" />
 
 What we're going to do now is to modify the breakpoint so that it breaks to the debugger if the ProcessedData.Username doesn't match what we expect.
 
@@ -118,7 +118,7 @@ What we're going to do now is to modify the breakpoint so that it breaks to the 
 
 2. Change this breakpoint into a conditional breakpoint on the same line. To do this, **right-click** the breakpoint. From the context menu, choose **Conditions...** 
 
-   <img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127095007545.png" alt="image-20241127095007545" style="zoom:50%;" />
+   <img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127095007545-3168185.png" alt="image-20241127095007545" style="zoom:50%;" />
 
    
 
@@ -128,7 +128,7 @@ What we're going to do now is to modify the breakpoint so that it breaks to the 
 _userData.Username != _userId
 ```
 
-   ![image-20241127095246067](/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127095246067.png)
+   ![image-20241127095246067](/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127095246067-3168185.png)
 4. Press **F5** to Run the program in debug mode.
 5. The debugger should break at your conditional breakpoint
 
@@ -138,13 +138,13 @@ The **Autos** window and the **Locals** window for the debugger probably aren't 
 7. Click where it says **Add item to watch** and add an item for both `_userId` and `userData`
 8. Expand the entry for **_userData** so that you can see all the values.  It should look something like the image below.  
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127095940527.png" alt="image-20241127095940527" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127095940527-3168185.png" alt="image-20241127095940527" style="zoom:50%;" />
 
 Notice how the username values do not match.  That's not right.
 
 9. Click the **Stop** button to stop debugging
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127100325486.png" alt="image-20241127100325486" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127100325486-3168185.png" alt="image-20241127100325486" style="zoom:50%;" />
 
 
 
@@ -156,16 +156,16 @@ When you're debugging code that's running in a loop, sometimes it can be helpful
 2. Add a new line breakpoint on the same line
 3. Right-click the breakpoint > Choose **Conditions...**
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127095007545.png" alt="image-20241127095007545" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127095007545-3168185.png" alt="image-20241127095007545" style="zoom:50%;" />
 
 4. You should see the **Breakpoint Settings** editor. From the drop-down box, choose **Hit Count** then set the value to **5**. Then press **Enter**
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127100957972.png" alt="image-20241127100957972" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127100957972-3168185.png" alt="image-20241127100957972" style="zoom:50%;" />
 
 4. Run the program in debug mode
 5. You should hit the breakpoint and the username values probably don't match
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127101136853.png" alt="image-20241127101136853" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127101136853-3168185.png" alt="image-20241127101136853" style="zoom:50%;" />
 
 Yup.  It's still broken.  Let's keep digging.
 
@@ -175,7 +175,7 @@ Right now we only have one breakpoint but you can easily get into breakpoint spr
 
 1. From the **Main Menu** for Visual Studio, choose the **Debug** menu then choose **Delete All Breakpoints** 
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127101526088.png" alt="image-20241127101526088" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127101526088-3168185.png" alt="image-20241127101526088" style="zoom:50%;" />
 
 
 
@@ -187,7 +187,7 @@ If you need a way to have the equivalent of a temporary `Console.WriteLine()`, y
 
 1. Let's add a Tracepoint in **DataProcessor.cs** at **Line 35**. Go to that line and **right-click** in the left gutter. Choose **Insert Tracepoint** from the context menu
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127103834504.png" alt="image-20241127103834504" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127103834504-3168185.png" alt="image-20241127103834504" style="zoom:50%;" />
 
 2. You should see the **Breakpoint Settings** dialog
 3. Under **Actions** enter the following in the **Show a message in the Output Window** textbox
@@ -198,7 +198,7 @@ TRACEPOINT! -- Adding processed item {item} to user data for user {_userId}
 
 
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127103951798.png" alt="image-20241127103951798" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127103951798-3168185.png" alt="image-20241127103951798" style="zoom:50%;" />
 
 4. Press **Enter**
 5. Let's make sure that the **Output** window is visible.  From the Visual Studio **Main Menu** choose **Debug > Windows > Output**
@@ -208,7 +208,7 @@ TRACEPOINT! -- Adding processed item {item} to user data for user {_userId}
 
 You should see a bunch of tracepoint messages in the output.
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127104320504.png" alt="image-20241127104320504" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127104320504-3168185.png" alt="image-20241127104320504" style="zoom:50%;" />
 
 
 ### Task 6 (Optional): Fix the Bug
@@ -305,7 +305,7 @@ class DataProcessor
 5. Press **F5** to run the application
 5. You should see output similar to the screenshot below and all the user data should match the appropriate username.
 
-<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127111324873.png" alt="image-20241127111324873" style="zoom:50%;" />
+<img src="/Users/benday/code/benday-inc/csharp-course/lab-01-debugging/image-20241127111324873-3168185.png" alt="image-20241127111324873" style="zoom:50%;" />
 
 Fixed it!
 
