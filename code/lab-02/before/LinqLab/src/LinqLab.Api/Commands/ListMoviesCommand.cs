@@ -28,6 +28,24 @@ public class ListMoviesCommand : SynchronousCommand
                 "Sort by field name. Valid values are 'title', 'year', 'genre'. Multiple values can be used via comma separated values. Direction using 'asc' or 'desc'")
             .WithDefaultValue(string.Empty);
 
+        args.AddString("genre")
+            .AsNotRequired()
+            .WithDescription(
+                "Filter by genre")
+            .WithDefaultValue(string.Empty);
+
+        args.AddInt32("year")
+            .AsNotRequired()
+            .WithDescription(
+                "Filter by year")
+            .WithDefaultValue(-1);
+
+        args.AddString("title")
+            .AsNotRequired()
+            .WithDescription(
+                "Filter by title")
+            .WithDefaultValue(string.Empty);
+
         return args;
     }
 
@@ -35,6 +53,10 @@ public class ListMoviesCommand : SynchronousCommand
     {
         var decadesAsString = Arguments.GetStringValue("decades");
         var decades = Utilities.CommaSeparatedValuesToIntArray(decadesAsString);
+        
+        var genre = Arguments.GetStringValue("genre");
+        var title = Arguments.GetStringValue("title");
+        var year = Arguments.GetInt32Value("year");
 
         var sorts =
             Utilities.CommaSeparatedValuesToSearchArguments(
@@ -43,6 +65,21 @@ public class ListMoviesCommand : SynchronousCommand
         var reader = new MovieDataReader();
 
         var movies = reader.GetMovies(decades);
+
+        if (string.IsNullOrEmpty(genre) == false)
+        {
+            movies = FilterByGenre(movies, genre);
+        }
+
+        if (string.IsNullOrEmpty(title) == false)
+        {
+            movies = FilterByTitle(movies, title);
+        }
+
+        if (year != -1)
+        {
+            movies = FilterByYear(movies, year);
+        }
 
         WriteLine($"Found {movies.Count} movies.");
 
@@ -58,9 +95,22 @@ public class ListMoviesCommand : SynchronousCommand
             var sortedMovies = Sort(movies, sorts);
         }
     }
+    private List<Movie> FilterByGenre(List<Movie> movies, string genre)
+    {
+        throw new NotImplementedException();
+    }
 
     private IEnumerable<Movie> Sort(
         List<Movie> movies, SearchArgument[] sorts)
+    {
+        throw new NotImplementedException();
+    }
+
+    private List<Movie> FilterByTitle(List<Movie> movies, string title)
+    {
+        throw new NotImplementedException();
+    }
+    private List<Movie> FilterByYear(List<Movie> movies, int year)
     {
         throw new NotImplementedException();
     }
