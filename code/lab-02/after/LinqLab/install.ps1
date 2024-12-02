@@ -16,4 +16,4 @@ $pathToDebugFolder = Join-Path $PSScriptRoot 'src\LinqLab.ConsoleUi\bin\Debug'
 
 Write-Host "Installing LinqLab.ConsoleUi from $pathToDebugFolder"
 
-dotnet tool install --global --add-source "$pathToDebugFolder" LinqLabConsoleUi
+dotnet tool install --global --add-source "$pathToDebugFolder" movies

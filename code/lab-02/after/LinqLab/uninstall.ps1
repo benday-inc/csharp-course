@@ -1,1 +1,1 @@
-dotnet tool uninstall --global LinqLabConsoleUi
+dotnet tool uninstall --global movies
