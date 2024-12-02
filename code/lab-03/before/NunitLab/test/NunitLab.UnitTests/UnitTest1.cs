@@ -1,4 +1,6 @@
-﻿public class Tests
+﻿namespace NunitLab.UnitTests;
+
+public class Tests
 {
     [SetUp]
     public void Setup()
