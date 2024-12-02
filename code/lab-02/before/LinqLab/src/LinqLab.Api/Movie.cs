@@ -31,6 +31,10 @@ public class Movie
     [JsonPropertyName("thumbnail_height")]
     public int ThumbnailHeight { get; set; }
 
+    public override string ToString()
+    {
+        return $"{Title} ({Year})";
+    }
 }
 
 

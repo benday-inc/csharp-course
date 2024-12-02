@@ -1,14 +1,30 @@
-﻿// See https://aka.ms/new-console-template for more information
-using LinqLab.Api;
+﻿using System.Diagnostics;
+using System.Reflection;
+using System.Text;
+using Benday.CommandsFramework;
+using LinqLab.Api.Commands;
 
-Console.WriteLine("Hello, World!");
+namespace LinqLab.ConsoleUi;
 
-
-var reader = new MovieDataReader();
-
-var movies = reader.GetMovies(1980);
-
-foreach (var movie in movies)
+class Program
 {
-    Console.WriteLine(movie.Title);
+    static void Main(string[] args)
+    {
+        var assembly = typeof(SampleCommand).Assembly;
+
+        var versionInfo =
+            FileVersionInfo.GetVersionInfo(
+                Assembly.GetExecutingAssembly().Location);
+
+        var options = new DefaultProgramOptions();
+
+        options.Version = $"v{versionInfo.FileVersion}";
+        options.ApplicationName = "Movie Database";
+        options.Website = "[add your website url here]";
+        options.UsesConfiguration = false;
+
+        var program = new DefaultProgram(options, assembly);
+
+        program.Run(args);
+    }
 }

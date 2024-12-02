@@ -13,15 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AB9C400F-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqLab.UnitTests", "test\LinqLab.UnitTests\LinqLab.UnitTests.csproj", "{EDC1037D-72CC-4F0A-B928-13C1ADC6095E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{038813B0-4ED8-40D1-807D-6108FFE0E2B2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{939EEEA4-82C6-4108-B65D-C3F28A915231}"
 	ProjectSection(SolutionItems) = preProject
-		data\data-from-this-git-repo.txt = data\data-from-this-git-repo.txt
-		data\movies-1970s.json = data\movies-1970s.json
-		data\movies-1980s.json = data\movies-1980s.json
-		data\movies-1990s.json = data\movies-1990s.json
-		data\movies-2000s.json = data\movies-2000s.json
-		data\movies-2010s.json = data\movies-2010s.json
-		data\movies-2020s.json = data\movies-2020s.json
+		install.ps1 = install.ps1
+		uninstall.ps1 = uninstall.ps1
 	EndProjectSection
 EndProject
 Global
