@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NunitLab.UnitTests", "NunitLab.UnitTests\NunitLab.UnitTests.csproj", "{93CB1F93-BA8B-45A3-86E9-5613A490CE23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Asdf", "Asdf", "{71AB6093-1529-4722-8CD0-D5B524779471}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NunitLab.UnitTests", "Asdf\NunitLab.UnitTests\NunitLab.UnitTests.csproj", "{E53E197B-BA65-4B14-81E5-815F723308A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93CB1F93-BA8B-45A3-86E9-5613A490CE23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93CB1F93-BA8B-45A3-86E9-5613A490CE23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93CB1F93-BA8B-45A3-86E9-5613A490CE23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93CB1F93-BA8B-45A3-86E9-5613A490CE23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E53E197B-BA65-4B14-81E5-815F723308A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E53E197B-BA65-4B14-81E5-815F723308A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E53E197B-BA65-4B14-81E5-815F723308A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E53E197B-BA65-4B14-81E5-815F723308A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E53E197B-BA65-4B14-81E5-815F723308A1} = {71AB6093-1529-4722-8CD0-D5B524779471}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A8509F6-320E-4119-B5A4-470973168315}
+	EndGlobalSection
+EndGlobal
