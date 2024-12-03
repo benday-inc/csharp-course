@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -85,5 +86,19 @@ public class BankAccountTests
         
         // Act & Assert
         Assert.That(() => SystemUnderTest.Withdraw(withdrawalAmount), Throws.InvalidOperationException);
+    }
+
+    [Test]
+    public void Withdraw_ShouldLeaveNonNegativeBalance()
+    {
+        SystemUnderTest.Withdraw(100);
+        SystemUnderTest.AssertBalanceIsNonNegative();
+    }
+
+    [Test]
+    public void Deposit_ShouldNotExceedUpperLimit()
+    {
+        SystemUnderTest.Deposit(900);
+        SystemUnderTest.AssertBalanceIsWithinUpperLimit();
     }
 }
