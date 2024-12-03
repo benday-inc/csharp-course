@@ -1,5 +1,12 @@
 ### **Two Half-Day Intermediate C# & Visual Studio Course Outline with Labs (Updated)**
 
+Written by Benjamin Day  
+Pluralsight Author | Microsoft MVP | Scrum.org Professional Scrum Trainer  
+https://www.benday.com  
+https://www.slidespeaker.ai  
+info@benday.com  
+YouTube: https://www.youtube.com/@_benday  
+
 #### **Target Audience**  
 Developers with some C# experience, looking to deepen their knowledge of advanced language features, Visual Studio tools, and practical software development patterns.
 
