@@ -84,4 +84,3 @@ public class OrderProcessorTests
         EmailServiceMock.Verify(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 }
-
