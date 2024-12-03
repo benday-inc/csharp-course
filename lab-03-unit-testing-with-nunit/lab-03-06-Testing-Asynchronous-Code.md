@@ -2,7 +2,7 @@
 # Lab 6: Testing Asynchronous Code
 
 ## Objective
-Learn how to write unit tests for asynchronous methods using NUnit.
+Learn how to write unit tests for asynchronous methods using NUnit and also notice, understand, and fix a common compiler problem in `async` code.
 
 ## Prerequisites
 - Completion of **Lab 5** or familiarity with custom assertions.
@@ -10,111 +10,149 @@ Learn how to write unit tests for asynchronous methods using NUnit.
 
 ## Instructions
 
-### Step 1: Create an AsyncFileProcessor Class
-1. In the `NunitLab` project, create a new class `AsyncFileProcessor.cs`:
+### Step 1: Create an BigImportantService Class
+1. In the `NunitLab.Api` project, create a new class `BigImportantService.cs`:
    ```csharp
-   using System.IO;
-   using System.Threading.Tasks;
-
-   namespace NunitLab
+   namespace NunitLab.Api;
+   
+   public class BigImportantService
    {
-       public class AsyncFileProcessor
+       public async Task<int> DoSomethingImportant()
        {
-           public async Task<string> ReadFileAsync(string filePath)
-           {
-               if (!File.Exists(filePath))
-                   throw new FileNotFoundException("The file does not exist.");
-
-               using var reader = new StreamReader(filePath);
-               return await reader.ReadToEndAsync();
-           }
-
-           public async Task WriteFileAsync(string filePath, string content)
-           {
-               using var writer = new StreamWriter(filePath);
-               await writer.WriteAsync(content);
-           }
+           // Do something important...
+           await Task.Delay(2500);
+           return 42;
        }
    }
    ```
 
-> ![Screenshot Placeholder: AsyncFileProcessor class implementation]
+<img src="image-20241203092230076.png" alt="image-20241203092230076" style="zoom:50%;" />
 
-### Step 2: Write Unit Tests for AsyncFileProcessor
-1. In the `NunitLab.UnitTests` project, create a new test class `AsyncFileProcessorTests.cs`:
+### Step 2: Write Unit Tests for BigImportantService
+1. In the `NunitLab.UnitTests` project, create a new test class `BigImportantServiceTests.cs`
+   
+
+*NOTE: There's a deliberate compilation error in this code. I'll talk you through it in a moment. Please hold. Your course is very important to us.*   
+
    ```csharp
-   using System.IO;
-   using System.Threading.Tasks;
-   using NUnit.Framework;
-   using NunitLab;
-
-   namespace NunitLab.UnitTests
+   using NunitLab.Api;
+   
+   namespace NunitLab.UnitTests;
+   
+   [TestFixture]
+   public class BigImportantServiceTests
    {
-       [TestFixture]
-       public class AsyncFileProcessorTests
+       public BigImportantService? _systemUnderTest;
+   
+       [SetUp]
+       public void Setup()
        {
-           private AsyncFileProcessor _fileProcessor;
-           private string _testFilePath;
-
-           [SetUp]
-           public void Setup()
+           _systemUnderTest = new BigImportantService();
+       }
+   
+       public BigImportantService SystemUnderTest
+       {
+           get
            {
-               _fileProcessor = new AsyncFileProcessor();
-               _testFilePath = "testFile.txt";
+               if (_systemUnderTest == null)
+               {
+                   _systemUnderTest = new BigImportantService();
+               }
+   
+               return _systemUnderTest;
            }
-
-           [TearDown]
-           public void Cleanup()
-           {
-               if (File.Exists(_testFilePath))
-                   File.Delete(_testFilePath);
-           }
-
-           [Test]
-           public async Task WriteFileAsync_ShouldWriteContentToFile()
-           {
-               string content = "Hello, Async World!";
-
-               await _fileProcessor.WriteFileAsync(_testFilePath, content);
-
-               string writtenContent = File.ReadAllText(_testFilePath);
-               Assert.AreEqual(content, writtenContent);
-           }
-
-           [Test]
-           public async Task ReadFileAsync_ShouldReturnFileContent()
-           {
-               string content = "Async Read Test";
-               File.WriteAllText(_testFilePath, content);
-
-               string result = await _fileProcessor.ReadFileAsync(_testFilePath);
-
-               Assert.AreEqual(content, result);
-           }
-
-           [Test]
-           public void ReadFileAsync_FileDoesNotExist_ShouldThrowFileNotFoundException()
-           {
-               Assert.ThrowsAsync<FileNotFoundException>(async () => 
-                   await _fileProcessor.ReadFileAsync("nonexistent.txt"));
-           }
+       }
+   
+       [Test]
+       public void DoSomethingImportant()
+       {
+           // Arrange
+           var expected = 42;
+   
+           // Act
+           var result = SystemUnderTest.DoSomethingImportant();
+   
+           // Assert
+           Assert.That(result, Is.EqualTo(expected));
        }
    }
    ```
 
-> ![Screenshot Placeholder: Async test methods in Visual Studio editor]
+### Step 3: Try to Compile...and then try to figure out why it breaks
 
-### Step 3: Run the Tests
+Ok. About that deliberate compile error...
+
+1. Try to compile the code
+
+2. The code won't compile
+
+![image-20241203093447068](image-20241203093447068.png)
+
+Now why did I add this compile error?  Because I personally do this 20+ times a week in my own code and I don't want you to burn any more energy than you have to handling it or getting frustrated by it.  
+
+This code `var result = SystemUnderTest.DoSomethingImportant();` looks so entirely normal and uninteresting.  And yet, when we get to the Assert -- `var result = SystemUnderTest.DoSomethingImportant();` -- it's failing with a completely bizarre error message: **The EqualTo constraint always fails as the actual and the expected value cannot be equal**.
+
+The problem is hidden a little bit by the `var result` variable declaration.  The C# `var` keyword means that the variable is declared as whatever the compiler detects that it should be. I know that when I'm writing code and look at this I'd probably be thinking that `SomethingImportant()` returns an `int`.  And it does...
+
+...sort of.
+
+Since `SomethingImportant()` is an `async` method, it doesn't return `int` it returns `Task<int>`.  The compiler is more than happy to make `var result` the right variable type.  To the compiler, **Line 36** makes perfect sense.  But when it hits **Line 39** - `Assert.That(result, Is.EqualTo(expected));`- the compiler tosses out an error.
+
+<img src="image-20241203092930014.png" alt="image-20241203092930014" style="zoom:50%;" />
+
+If we wrote the code like the following screenshot, we'd still get a compile error but it would make a lot more sense.  **Cannot implicitly convert type 'System.Threading.Tasks.Task<int>' to 'int'**
+
+<img src="image-20241203094404355.png" alt="image-20241203094404355" style="zoom:50%;" />
+
+This is all **var's** fault.  (Not really.)
+
+### Step 4: Fix the Compile Error
+
+It's not really `var` that's causing the problem.  The var keyword is simply shifting where the point where we actually notice the error.  
+
+**The real problem:** we're missing the `await` keyword.
+
+1. Add the `await` keyword before the call to **SystemUnderTest.DoSomethingImportant()**
+
+<img src="image-20241203094921824.png" alt="image-20241203094921824" style="zoom:50%;" />
+
+2. Recompile.
+3. You'll get a new compile error.  **The 'await' operator can only be used within an async method. Consider marking this method with the 'async' modifier and changing its return type to 'Task'.**
+
+This is happening because we're trying to use `await` inside a method that isn't marked as `async`.
+
+4. Modify the method to use `async`. To do this, change the method signature to be `public async Task DoSomethingImportant()`
+
+```csharp
+[Test]
+public async Task DoSomethingImportant()
+{
+    // Arrange
+    var expected = 42;
+
+    // Act
+    var result = await SystemUnderTest.DoSomethingImportant();
+
+    // Assert
+    Assert.That(result, Is.EqualTo(expected));
+}
+```
+
+
+
+<img src="image-20241203095259071.png" alt="image-20241203095259071" style="zoom:50%;" />
+
+5. Try to compile.
+
+This time the compile should succeed.
+
+### Step 5: Run the Tests
 1. Open the **Test Explorer** in Visual Studio.
-2. Run all tests and verify that:
-   - Writing and reading file content works correctly.
-   - The appropriate exception is thrown when a file is missing.
+2. Run all tests
+3. The tests should pass
 
-> ![Screenshot Placeholder: Test Explorer showing passing async tests]
+<img src="image-20241203095516787.png" alt="image-20241203095516787" style="zoom:50%;" />
 
-## Outcome
-Students will:
-- Learn how to write tests for asynchronous methods.
-- Understand how to use `Assert.ThrowsAsync` to validate exceptions in async code.
+
 
 ---
