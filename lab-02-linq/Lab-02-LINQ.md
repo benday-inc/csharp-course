@@ -1,208 +1,184 @@
-# LINQ Lab: Movie Manager Application
+# LINQ Lab: Movie Reporting Application
 
 ## Overview
-In this multi-part lab, students will build a console application called “Movie Manager” that uses LINQ to process a collection of movies. Each part introduces new LINQ concepts and gradually increases the complexity of the application.
+In this multi-part lab, students will build a console application called “Movie Report” that uses LINQ to process a collection of movies. Each part introduces new LINQ concepts and gradually increases the complexity of the application.
+
+The basic structure of the application has already been created for you.  Your job will be to implement the querying and filtering methods that currently throw a `NotImplementedException`. 
+
+All these labs use the `LinqLab.sln` solution
+
+## A little bit about the application
+
+This application is intended to be deployed (eventually) as a .NET Tool that can be run from the command line using the `movies` command. It's probably easiest to do your development and debugging work in Visual Studio rather than trying to run from the command prompt.  
+
+If you want to install the app and try to run it from the command line, you can 
+
+1. Open a powershell window
+2. Go to the solution directory
+3. Run `install.ps1`
+
+<img src="image-20241202120436376.png" alt="image-20241202120436376" style="zoom:50%;" />
+
+4. Once you've installed the application as a .NET Tool, you can run it by typing `movies`.  You should see the list of available commands in the tool -- **actor, genres, list, and popular**.  
+
+<img src="image-20241202120751934.png" alt="image-20241202120751934" style="zoom:50%;" />
+
+5. If you run the movies app with a command name and add the `--help` arg, you'll see the available arguments and options for that command.  For example if you run `movies list --help`, you should see a screen similar to the following.
+
+<img src="image-20241202121046689.png" alt="image-20241202121046689" style="zoom:50%;" />
 
 —
 
 ## Part 1: Basic LINQ Filtering and Sorting
 
-### Objective
-Familiarize students with LINQ basics, including filtering, sorting, and projecting data.
+For this lab you'll be working on the ListMoviesCommand implementation.
 
-### Tasks
-1. Set up a hardcoded list of movies. Each movie should have:
-   - **Title** (string)
-   - **ReleaseYear** (int)
-   - **Genre** (string)
-   - **Rating** (double)
+### Getting Started
 
-2. Filter movies by genre using LINQ `where`.
-3. Sort the filtered list by:
-   - Release year (descending).
-   - Rating (descending).
-4. Project the results into a summary of titles and ratings using LINQ `select`.
+1. Open **LinqLab.sln** in Visual Studio
+2. In Solution Explorer, in the **LinqLab.Api** project you should see namespace folder called **Commands**. This is the folder where you'll be working.
 
-### Example Output
-```
-Filtered Movies (sorted by year and rating):
-1. Mad Max: Fury Road (2015) - Rating: 8.1
-2. Die Hard (1988) - Rating: 8.2
+<img src="image-20241202121423001.png" alt="image-20241202121423001" style="zoom:50%;" />
 
-Movie Summary (Title - Rating):
-- Mad Max: Fury Road - 8.1
-- Die Hard - 8.2
-```
+3. Open the **ListMoviesCommand.cs** file
+4. In all of the *Command.cs classes, there will be be a method called **GetArguments()**. This method describes the values that are available on the command line.
 
-*Add a screenshot of the console output showing the filtered and sorted movies.*
+<img src="image-20241202121714849.png" alt="image-20241202121714849" style="zoom:50%;" />
 
-—
+5. The **OnExecute()** method is where the work gets done for each command.
 
-## Part 2: Grouping and Aggregation
+<img src="image-20241202121806613.png" alt="image-20241202121806613" style="zoom:50%;" />
 
-### Objective
-Explore advanced LINQ operators like `groupBy` and `aggregate`.
+### Debugging the Application in Visual Studio
 
-### Tasks
-1. Group movies by genre using LINQ `groupBy`.
-2. Display the count of movies in each genre.
-3. Calculate and display:
-   - The average rating of all movies.
-   - The average rating of movies in each genre.
-4. Find the highest-rated movie in each genre.
+This application is a command line tool and thankfully Visual Studio has features that help us debug this kind of app.  We're going to be making use of **/Properties/launchSettings.json** to manage how to run our app.  
 
-### Example Output
-```
-Movies grouped by genre:
-Action (2 movies)
-Comedy (3 movies)
-Drama (5 movies)
+You can either edit **launchSettings.json** manually or using the Visual Studio **Debug Properties** editor.
 
-Average rating of all movies: 7.4
-Average rating by genre:
-- Action: 8.2
-- Comedy: 6.8
-- Drama: 7.5
+<img src="image-20241202122224064.png" alt="image-20241202122224064" style="zoom:50%;" />
 
-Highest-rated movies by genre:
-- Action: Die Hard (8.2)
-- Comedy: The Grand Budapest Hotel (8.1)
-```
+1. To access the **Debug Properties** editor, you click on the Debug button's drop down menu and then choose **Debug Properties**
 
-*Include a screenshot of the grouped output to help students understand how grouping works.*
+<img src="image-20241202122443520.png" alt="image-20241202122443520" style="zoom:50%;" />
 
-—
+2. You should now see a window with the title **Launch Profiles**
+3. On the left side, is a list of the launch profiles. In the image below (and in the sample solution), you should see two launch profiles: **list** and **list sorted by name desc**.  If you click on **list**, you'll see the command line arguments for this launch configuration 
 
-## Part 3: User Input and Dynamic Queries
+<img src="image-20241202122607716.png" alt="image-20241202122607716" style="zoom:50%;" />
 
-### Objective
-Teach students how to build LINQ queries dynamically based on user input.
+4. If you click on **list sorted by name desc**, you should see a completely different starting configuration for the list command that has arguments to sort by name in descending order. 
 
-### Tasks
-1. Allow users to filter movies by:
-   - Release year range.
-   - Minimum rating.
-2. Let users choose the sort order dynamically (e.g., by year, rating, or title).
-3. Use LINQ to build and execute the query based on the input criteria.
+<img src="image-20241202122920243.png" alt="image-20241202122920243" style="zoom:50%;" />
 
-### Example Output
-```
-Enter the minimum release year: 2000
-Enter the minimum rating: 7.5
-Choose sort order (1 - Year, 2 - Rating, 3 - Title): 2
+5. Close the **Launch Profiles** dialog
+6. To choose which debug launch profile that you want to use, click on the debug dropdown menu and and choose the configuration you want to use.  In this case, choose **list**
 
-Filtered and Sorted Movies:
-1. Inception (2010) - Rating: 8.8
-2. The Dark Knight (2008) - Rating: 9.0
-```
+<img src="image-20241202122127065.png" alt="image-20241202122127065" style="zoom:50%;" />
 
-*Add a screenshot of the dynamic query results with user inputs.*
+7. Click on **List** to start debugging
 
-—
+<img src="image-20241202123242691.png" alt="image-20241202123242691" style="zoom:50%;" />
 
-## Part 4: Advanced Projections and Transformation
+8. The app should run and you should see a list of movies
 
-### Objective
-Dive into more advanced data manipulation with LINQ.
+<img src="image-20241202123338972.png" alt="image-20241202123338972" style="zoom:50%;" />
 
-### Tasks
-1. Create a new data type `GenreSummary` with:
-   - **Genre** (string)
-   - **MovieCount** (int)
-   - **AverageRating** (double)
-   - **TopRatedMovieTitle** (string)
-2. Use LINQ to transform the movie list into a collection of `GenreSummary` objects.
-3. Display the genre summary.
+9. Press any key to stop debugging and close this window
 
-### Example Output
-```
-Genre Summary:
-- Action: 2 movies, Avg Rating: 8.2, Top Movie: Die Hard
-- Comedy: 3 movies, Avg Rating: 6.8, Top Movie: The Grand Budapest Hotel
-```
+### Implement Sorting using LINQ
 
-*Include a screenshot of the genre summary output for clarity.*
+You're now going to start implementing the missing features of the application.
 
-—
+1. Change the launch profile to be **list sorted by name desc**
 
-## Part 5: External Data Sources
+<img src="image-20241202123558431.png" alt="image-20241202123558431" style="zoom:50%;" />
 
-### Objective
-Work with external data sources to make the app more realistic.
+2. Run the app
+3. The app should run and hit an exception in the **SortMovies()** method of **ListMoviesCommand.cs**.  
 
-### Tasks
-1. Replace the hardcoded movie list with data loaded from a CSV or JSON file.
-2. Use LINQ to filter, sort, and transform the loaded data.
-3. Allow users to save filtered results to a new file.
+<img src="image-20241202123736877.png" alt="image-20241202123736877" style="zoom:50%;" />
 
-### Example Output
-```
-Loaded 15 movies from movies.json.
+4. Press the stop button to end debugging
 
-Enter a genre to filter by: Action
+<img src="image-20241202123854465.png" alt="image-20241202123854465" style="zoom:50%;" />
 
-Filtered Movies (saved to filtered_movies.json):
-1. Mad Max: Fury Road (2015) - Rating: 8.1
-2. Die Hard (1988) - Rating: 8.2
-```
+### Task: Implement SortMovies() for a single search argument
 
-*Show a screenshot of the console with the file load and save process.*
+1. Go ahead and implement the SortMovies() method for a single argument.  In this case the single argument is **title desc**
+2. Implement for by **title** ascending.  HINT: You'll probably want to add a new debug launch profile
+3. Implement sort by **genre** and sort by **year** for both ascending and descending. HINT: you'll definitely want to start adding more debug launch profiles
+4. Implement combination sorts
+   *  Year descending and title ascending
+   *  Year, title, genre
+   *  Genre, title, year
 
-—
+### Task: Implement Filter by Number of Rows
 
-## Part 6: Asynchronous LINQ
+This option will limit the number of rows that gets returned from the application.
 
-### Objective
-Introduce the concept of asynchronous programming with LINQ in C#.
+1. Implement the **FilterByNumberOfRows()** method
 
-### Tasks
-1. Simulate an asynchronous data fetch operation (e.g., downloading movie data from a REST API).
-2. Use `async/await` to process the data with LINQ in the background.
-3. Display the results once processing is complete.
+### Task: Filter by Year
 
-### Example Output
-```
-Fetching movie data...
+This will filter the movie results by year
 
-Movies fetched successfully!
-Top Movies by Rating:
-1. The Dark Knight (2008) - Rating: 9.0
-2. Inception (2010) - Rating: 8.8
-```
+1. Implement the **FilterByYear()** method
 
-*Add a screenshot of the asynchronous data fetch and processing output.*
+### Task: Filter by Genre
 
-—
+This will filter by movie genre.  
 
-## Part 7: Unit Testing LINQ Queries
+1. Implement the **FilterByGenre()** method
 
-### Objective
-Introduce the idea of writing testable LINQ queries.
+### Task: Filter by Title
 
-### Tasks
-1. Refactor the LINQ logic into reusable methods.
-2. Write unit tests to verify the behavior of:
-   - Filtering by genre.
-   - Sorting by year and rating.
-   - Grouping by genre.
-   - Aggregating average ratings.
-3. Use a testing framework like MSTest, xUnit, or NUnit.
+This will filter by movie title
 
-### Example Unit Test
-```csharp
-[TestMethod]
-public void TestFilterByGenre()
-{
-    var movies = new List<Movie> { /* Add test data */ };
-    var result = MovieProcessor.FilterByGenre(movies, “Action”);
+1. Implement the **FilterByTitle()** method
 
-    Assert.AreEqual(2, result.Count);
-    Assert.IsTrue(result.All(m => m.Genre == “Action”));
-}
-```
+### Task (Optional): Filter by Actor
 
-—
+This one is a little harder because I haven't created the structure for you.  
 
-## Conclusion
-This multi-part lab introduces students to LINQ concepts progressively, reinforcing learning at each step. By the end, students will have developed a fully functional and testable movie management app, gaining practical experience with LINQ’s power and flexibility.
+1. Add a new argument definition for actor name
+2. Get the actor name filter value in the OnExecute() method
+3. Implement a filter method for finding movies with a given actor
+
+## List Genres
+
+In this section of the lab, you'll be working on the **ListGenresCommand**.  The purpose of this command is to find all the genres in the database and display them sorted by name either ascending or descending.  The trick here is going to be making sure that you return only distinct values -- NO DUPLICATES ALLOWED!
+
+1. Open **ListGenresCommand.cs**
+2. Implement the **GetDistinctGenres()** method
+
+HINT: you should add at least one new debug launch configuration.
+
+## Most Popular Actors
+
+In this lab, we're trying to answer the question -- **Which actors and actresses are the most popular?**  To do this, you're going to need to figure out 
+
+* All the actor names in the dataset
+* How many movies each actor was in
+* Find the actors with the most movies
+
+1. Open **MostPopularActorsCommand.cs**
+2. Implement the **GetMostPopularActors()** method
+
+## Actor Report
+
+This method is for creating a report on what an actor has been up to.  The things we're looking for:
+
+* Actor Name
+* Most common co-stars
+* Most common genres
+* Number of movies per year
+
+1. Open **GetActorCommand.cs**
+2. Implement all the methods that currently throw **NotImplementedException**
+
+
+
+
+
+
 
