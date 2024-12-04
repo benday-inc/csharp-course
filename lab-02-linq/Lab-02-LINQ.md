@@ -17,15 +17,15 @@ If you want to install the app and try to run it from the command line, you can
 2. Go to the solution directory
 3. Run `install.ps1`
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202120436376.png" alt="image-20241202120436376" style="zoom:50%;" />
+<img src="image-20241202120436376.png" alt="image-20241202120436376" style="zoom:50%;" />
 
 4. Once you've installed the application as a .NET Tool, you can run it by typing `movies`.  You should see the list of available commands in the tool -- **actor, genres, list, and popular**.  
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202120751934.png" alt="image-20241202120751934" style="zoom:50%;" />
+<img src="image-20241202120751934.png" alt="image-20241202120751934" style="zoom:50%;" />
 
 5. If you run the movies app with a command name and add the `--help` arg, you'll see the available arguments and options for that command.  For example if you run `movies list --help`, you should see a screen similar to the following.
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202121046689.png" alt="image-20241202121046689" style="zoom:50%;" />
+<img src="image-20241202121046689.png" alt="image-20241202121046689" style="zoom:50%;" />
 
 —
 
@@ -38,16 +38,16 @@ For this lab you'll be working on the ListMoviesCommand implementation.
 1. Open **LinqLab.sln** in Visual Studio
 2. In Solution Explorer, in the **LinqLab.Api** project you should see namespace folder called **Commands**. This is the folder where you'll be working.
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202121423001.png" alt="image-20241202121423001" style="zoom:50%;" />
+<img src="image-20241202121423001.png" alt="image-20241202121423001" style="zoom:50%;" />
 
 3. Open the **ListMoviesCommand.cs** file
 4. In all of the *Command.cs classes, there will be be a method called **GetArguments()**. This method describes the values that are available on the command line.
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202121714849.png" alt="image-20241202121714849" style="zoom:50%;" />
+<img src="image-20241202121714849.png" alt="image-20241202121714849" style="zoom:50%;" />
 
 5. The **OnExecute()** method is where the work gets done for each command.
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202121806613.png" alt="image-20241202121806613" style="zoom:50%;" />
+<img src="image-20241202121806613.png" alt="image-20241202121806613" style="zoom:50%;" />
 
 ### Debugging the Application in Visual Studio
 
@@ -55,33 +55,33 @@ This application is a command line tool and thankfully Visual Studio has feature
 
 You can either edit **launchSettings.json** manually or using the Visual Studio **Debug Properties** editor.
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202122224064.png" alt="image-20241202122224064" style="zoom:50%;" />
+<img src="image-20241202122224064.png" alt="image-20241202122224064" style="zoom:50%;" />
 
 1. To access the **Debug Properties** editor, you click on the Debug button's drop down menu and then choose **Debug Properties**
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202122443520.png" alt="image-20241202122443520" style="zoom:50%;" />
+<img src="image-20241202122443520.png" alt="image-20241202122443520" style="zoom:50%;" />
 
 2. You should now see a window with the title **Launch Profiles**
 3. On the left side, is a list of the launch profiles. In the image below (and in the sample solution), you should see two launch profiles: **list** and **list sorted by name desc**.  If you click on **list**, you'll see the command line arguments for this launch configuration 
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202122607716.png" alt="image-20241202122607716" style="zoom:50%;" />
+<img src="image-20241202122607716.png" alt="image-20241202122607716" style="zoom:50%;" />
 
 4. If you click on **list sorted by name desc**, you should see a completely different starting configuration for the list command that has arguments to sort by name in descending order. 
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202122920243.png" alt="image-20241202122920243" style="zoom:50%;" />
+<img src="image-20241202122920243.png" alt="image-20241202122920243" style="zoom:50%;" />
 
 5. Close the **Launch Profiles** dialog
 6. To choose which debug launch profile that you want to use, click on the debug dropdown menu and and choose the configuration you want to use.  In this case, choose **list**
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202122127065.png" alt="image-20241202122127065" style="zoom:50%;" />
+<img src="image-20241202122127065.png" alt="image-20241202122127065" style="zoom:50%;" />
 
 7. Click on **List** to start debugging
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202123242691.png" alt="image-20241202123242691" style="zoom:50%;" />
+<img src="image-20241202123242691.png" alt="image-20241202123242691" style="zoom:50%;" />
 
 8. The app should run and you should see a list of movies
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202123338972.png" alt="image-20241202123338972" style="zoom:50%;" />
+<img src="image-20241202123338972.png" alt="image-20241202123338972" style="zoom:50%;" />
 
 9. Press any key to stop debugging and close this window
 
@@ -91,16 +91,16 @@ You're now going to start implementing the missing features of the application.
 
 1. Change the launch profile to be **list sorted by name desc**
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202123558431.png" alt="image-20241202123558431" style="zoom:50%;" />
+<img src="image-20241202123558431.png" alt="image-20241202123558431" style="zoom:50%;" />
 
 2. Run the app
 3. The app should run and hit an exception in the **SortMovies()** method of **ListMoviesCommand.cs**.  
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202123736877.png" alt="image-20241202123736877" style="zoom:50%;" />
+<img src="image-20241202123736877.png" alt="image-20241202123736877" style="zoom:50%;" />
 
 4. Press the stop button to end debugging
 
-<img src="/Users/benday/Library/Application Support/typora-user-images/image-20241202123854465.png" alt="image-20241202123854465" style="zoom:50%;" />
+<img src="image-20241202123854465.png" alt="image-20241202123854465" style="zoom:50%;" />
 
 ### Task: Implement SortMovies() for a single search argument
 
