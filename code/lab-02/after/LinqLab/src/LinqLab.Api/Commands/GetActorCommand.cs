@@ -57,7 +57,7 @@ public class GetActorCommand : SynchronousCommand
 
         WriteLine("Most common co-stars:");
         WriteLine("Name | # of Movies");
-        foreach (var item in mostCommonCoStars)
+        foreach (var item in mostCommonCoStars.Take(5))
         {
             WriteLine($"{item.Name} ({item.MovieCount})");
         }
@@ -65,7 +65,7 @@ public class GetActorCommand : SynchronousCommand
         WriteLine();
 
         WriteLine("Most common genres:");
-        foreach (var item in mostCommonGenres)
+        foreach (var item in mostCommonGenres.Take(5))
         {
             WriteLine(item);
         }
@@ -80,24 +80,116 @@ public class GetActorCommand : SynchronousCommand
         }
     }
 
-    private IEnumerable<Movie> GetMoviesWithActor(List<Movie> movies, string actorName)
+    private IEnumerable<Movie> GetMoviesWithActor(
+        List<Movie> movies, string actorName)
     {
-        throw new NotImplementedException();
+        var moviesWithActor = movies.Where(
+            m =>
+            {
+                var found = false;
+                foreach (var a in m.Cast)
+                {
+                    if (a.ContainsCaseInsensitive(actorName))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                return found;
+            }).ToList();
+
+        return moviesWithActor;
     }
 
     private IEnumerable<ActorInfo> GetMostCommonCoStars(
         IEnumerable<Movie> moviesWithActor, string actorName)
     {
-        throw new NotImplementedException();
+        var coStars = new Dictionary<string, ActorInfo>();
+
+        foreach (var movie in moviesWithActor)
+        {
+            foreach (var actor in movie.Cast)
+            {
+                var toLower = actor.ToLower();
+
+                if (coStars.ContainsKey(toLower) == true)
+                {
+                    coStars[toLower].MovieCount++;
+                }
+                else
+                {
+                    var info = actor.ToActor();
+                    info.MovieCount = 1;
+                    coStars.Add(toLower, info);
+                }
+            }
+        }
+
+        var coStarsSortedByMovieCountDescending =
+            coStars.Values
+                .Where(a => a.Name.EqualsCaseInsensitive(actorName) == false)
+                .OrderByDescending(a => a.MovieCount)
+                .ToList();
+
+        return coStarsSortedByMovieCountDescending;
     }
 
     private IEnumerable<string> GetMostCommonGenres(IEnumerable<Movie> moviesWithActor)
     {
-        throw new NotImplementedException();
+        var genres = new Dictionary<string, int>();
+
+        foreach (var movie in moviesWithActor)
+        {
+            foreach (var genre in movie.Genres)
+            {
+                var toLower = genre.ToLower();
+
+                if (genres.ContainsKey(toLower) == true)
+                {
+                    genres[toLower]++;
+                }
+                else
+                {
+                    genres.Add(toLower, 1);
+                }
+            }
+        }
+
+        var genresSortedByCountDescending =
+            genres.OrderByDescending(g => g.Value)
+                .Select(g => g.Key)
+                .ToList();
+
+        return genresSortedByCountDescending;
     }
 
     private IEnumerable<MovieCountByYear> GetMoviesPerYear(IEnumerable<Movie> moviesWithActor)
     {
-        throw new NotImplementedException();
+        // group movies by year
+        var moviesByYear = new Dictionary<int, MovieCountByYear>();
+
+        foreach (var movie in moviesWithActor)
+        {
+            var year = movie.Year;
+            if (moviesByYear.ContainsKey(year) == true)
+            {
+                moviesByYear[year].MovieCount++;
+            }
+            else
+            {
+                var info = new MovieCountByYear();
+                info.Year = year;
+                info.MovieCount = 1;
+                moviesByYear.Add(year, info);
+            }
+        }
+
+        // sort by year
+
+        var moviesByYearSorted = moviesByYear.Values
+            .OrderBy(m => m.Year)
+            .ToList();
+
+        return moviesByYearSorted;
     }
 }

@@ -46,6 +46,12 @@ public class ListMoviesCommand : SynchronousCommand
                 "Filter by title")
             .WithDefaultValue(string.Empty);
 
+        args.AddString("actor")
+            .AsNotRequired()
+            .WithDescription(
+                "Filter by actor name")
+            .WithDefaultValue(string.Empty);
+
         args.AddInt32("rows")
             .AsNotRequired()
             .WithDescription(
@@ -61,6 +67,7 @@ public class ListMoviesCommand : SynchronousCommand
         var decades = Utilities.CommaSeparatedValuesToIntArray(decadesAsString);
         
         var genre = Arguments.GetStringValue("genre");
+        var actor = Arguments.GetStringValue("actor");
         var title = Arguments.GetStringValue("title");
         var year = Arguments.GetInt32Value("year");
         var numberOfRows = Arguments.GetInt32Value("rows");
@@ -73,14 +80,25 @@ public class ListMoviesCommand : SynchronousCommand
 
         var movies = reader.GetMovies(decades);
 
+        var filterByGenre = false;
+
         if (string.IsNullOrEmpty(genre) == false)
         {
+            filterByGenre = true;
             movies = FilterByGenre(movies, genre);
         }
 
         if (string.IsNullOrEmpty(title) == false)
         {
             movies = FilterByTitle(movies, title);
+        }
+
+        var filterByActor = false;
+
+        if (string.IsNullOrEmpty(actor) == false)
+        {
+            filterByActor = true;
+            movies = FilterByActor(movies, actor);
         }
 
         if (year != -1)
@@ -99,7 +117,18 @@ public class ListMoviesCommand : SynchronousCommand
 
             foreach (var movie in movies)
             {
-                WriteLine(movie.ToString());
+                if (filterByGenre == true)
+                {
+                    WriteLine(movie.ToStringGenres());
+                }
+                else if (filterByActor == true)
+                {
+                    WriteLine(movie.ToStringActors());
+                }
+                else
+                {
+                    WriteLine(movie.ToString());
+                }
             }
         }
         else
@@ -111,35 +140,136 @@ public class ListMoviesCommand : SynchronousCommand
                 movies = FilterByNumberOfRows(movies, numberOfRows);
             }
 
-            foreach (var movie in movies)
+            foreach (var movie in sortedMovies)
             {
-                WriteLine(movie.ToString());
+                if (filterByGenre == true)
+                {
+                    WriteLine(movie.ToStringGenres());
+                }
+                else if (filterByActor == true)
+                {
+                    WriteLine(movie.ToStringActors());
+                }
+                else
+                {
+                    WriteLine(movie.ToString());
+                }
             }
         }
     }
 
     private List<Movie> FilterByNumberOfRows(List<Movie> movies, int numberOfRows)
     {
-        throw new NotImplementedException();
+        return movies.Take(numberOfRows).ToList();
     }
 
     private List<Movie> FilterByGenre(List<Movie> movies, string genre)
     {
-        throw new NotImplementedException();
+        var filteredMovies = movies.Where(
+            m =>
+            {
+                var found = false;
+                foreach (var g in m.Genres)
+                {
+                    if (g.ContainsCaseInsensitive(genre))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                return found;
+            }).ToList();
+
+        return filteredMovies;
     }
+
+    
 
     private IEnumerable<Movie> SortMovies(
         List<Movie> movies, SearchArgument[] sorts)
     {
-        throw new NotImplementedException();
+        if (sorts.Length == 0)
+        {
+            return movies;
+        }
+
+
+        var firstSort = sorts[0];
+
+        if (firstSort.Value.EqualsCaseInsensitive("title") || 
+            firstSort.Value.EqualsCaseInsensitive("name"))
+        {
+            var sortedMovies = movies.AsEnumerable();
+
+            if (firstSort.IsAscending == true)
+            {
+                sortedMovies = sortedMovies.OrderBy(m => m.Title);
+            }
+            else
+            {
+                sortedMovies = sortedMovies.OrderByDescending(m => m.Title);
+            }
+
+            return sortedMovies;
+        }
+        else if (firstSort.Value.EqualsCaseInsensitive("year"))
+        {
+            var sortedMovies = movies.AsEnumerable();
+
+            if (firstSort.IsAscending == true)
+            {
+                sortedMovies = sortedMovies.OrderBy(m => m.Year);
+            }
+            else
+            {
+                sortedMovies = sortedMovies.OrderByDescending(m => m.Year);
+            }
+
+            return sortedMovies;
+        }
+        else if (firstSort.Value.EqualsCaseInsensitive("genre"))
+        {
+            var sortedMovies = movies.AsEnumerable();
+
+            if (firstSort.IsAscending == true)
+            {
+                sortedMovies = sortedMovies.OrderBy(m => m.Genres.FirstOrDefault());
+            }
+            else
+            {
+                sortedMovies = sortedMovies.OrderByDescending(m => m.Genres.FirstOrDefault());
+            }
+
+            return sortedMovies;
+        }
+
+        return movies;
     }
 
     private List<Movie> FilterByTitle(List<Movie> movies, string title)
     {
-        throw new NotImplementedException();
+        var filteredMovies = movies
+            .Where(m => 
+                m.Title.Contains(title, StringComparison.CurrentCultureIgnoreCase
+                )).ToList();
+        return filteredMovies;
     }
+
+    private List<Movie> FilterByActor(List<Movie> movies, string actor)
+    {
+        var filteredMovies = movies
+            .Where(m =>
+                m.Cast.Any(a =>
+                a.Contains(actor, StringComparison.CurrentCultureIgnoreCase)))
+            .ToList();
+
+        return filteredMovies;
+    }
+
     private List<Movie> FilterByYear(List<Movie> movies, int year)
     {
-        throw new NotImplementedException();
+        var filteredMovies = movies.Where(m => m.Year == year).ToList();
+
+        return filteredMovies;
     }
 }

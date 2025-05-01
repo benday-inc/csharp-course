@@ -61,6 +61,19 @@ public class ListGenresCommand : SynchronousCommand
 
     private string[] GetDistinctGenres(List<Movie> movies, bool sortDescending)
     {
-        throw new NotImplementedException();
+        var distinctGenres = movies.SelectMany(m => m.Genres).Distinct();
+
+        if (sortDescending == false)
+        {
+            return distinctGenres
+                .OrderBy(g => g)
+                .ToArray();
+        }
+        else
+        {
+            return distinctGenres
+                .OrderByDescending(g => g)
+                .ToArray();
+        }
     }
 }

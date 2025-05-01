@@ -1,4 +1,5 @@
 using Benday.CommandsFramework;
+using Benday.CommandsFramework.DataFormatting;
 
 namespace LinqLab.Api.Commands;
 
@@ -46,16 +47,54 @@ public class MostPopularActorsCommand : SynchronousCommand
 
         var actors = GetMostPopularActors(movies, rows);
 
-        WriteLine($"Actor Name | # of Movies");
+        var formatter = new TableFormatter();
+
+        formatter.AddColumn("Actor Name");
+        formatter.AddColumn("# of Movies");
 
         foreach (var item in actors)
         {
-            WriteLine($"{item.Name} ({item.MovieCount})");
+            formatter.AddData(item.Name, item.MovieCount.ToString());
         }
+
+        WriteLine(formatter.FormatTable());
     }
 
     private ActorInfo[] GetMostPopularActors(List<Movie> movies, int rows)
     {
-        throw new NotImplementedException();
+        var actorInfoList = new List<ActorInfo>();
+        foreach (var movie in movies)
+        {
+            foreach (var actor in movie.Cast)
+            {
+                var existingActor = actorInfoList.FirstOrDefault(a => a.Name == actor);
+                if (existingActor == null)
+                {
+                    actorInfoList.Add(new ActorInfo() { 
+                        Name = actor,
+                        MovieCount = 1
+                    });
+                }
+                else
+                {
+                    existingActor.MovieCount++;
+                }
+            }
+        }
+
+        var sortedActors = actorInfoList.OrderByDescending(a => a.MovieCount).ToArray();
+
+        if (rows > 0 && rows < sortedActors.Length)
+        {
+            return sortedActors.Take(rows).ToArray();
+        }
+        else if (rows == 0)
+        {
+            return Array.Empty<ActorInfo>();
+        }
+        else
+        {
+            return sortedActors;
+        }
     }   
 }

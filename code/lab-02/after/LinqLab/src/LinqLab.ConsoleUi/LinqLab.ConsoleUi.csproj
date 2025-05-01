@@ -3,7 +3,7 @@
     <ProjectReference Include="..\LinqLab.Api\LinqLab.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Benday.CommandsFramework" Version="4.4.0" />
+    <PackageReference Include="Benday.CommandsFramework" Version="4.7.0" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
