@@ -36,6 +36,13 @@ public class MovieDataReader
     {
         var validValues = new List<int>();
 
+        validValues.Add(1900);
+        validValues.Add(1910);
+        validValues.Add(1920);
+        validValues.Add(1930);
+        validValues.Add(1940);
+        validValues.Add(1950);
+        validValues.Add(1960);
         validValues.Add(1970);
         validValues.Add(1980);
         validValues.Add(1990);

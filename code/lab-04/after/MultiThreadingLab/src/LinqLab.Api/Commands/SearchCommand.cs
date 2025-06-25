@@ -52,7 +52,7 @@ public class SearchCommand : AsynchronousCommand
     {
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
-        var decades = new int[] { 1970, 1980, 1990, 2000, 2010, 2020 };
+        var decades = new int[] { 1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020 };
 
         IEnumerable<KeywordSearchResult> results;
 
@@ -162,7 +162,7 @@ public class SearchCommand : AsynchronousCommand
                 continue; // Skip this result if validation fails
             }
 
-            results.Add(result);            
+            results.Add(result);
         }
 
         var matchingMoviesByCast = movies
