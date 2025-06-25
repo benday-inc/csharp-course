@@ -1,0 +1,84 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "list": {
+      "commandName": "Project",
+      "commandLineArgs": "list"
+    },
+    "list sorted by name desc": {
+      "commandName": "Project",
+      "commandLineArgs": "list /sort:\"name desc\""
+    },
+    "list sorted by name asc": {
+      "commandName": "Project",
+      "commandLineArgs": "list /sort:\"name\""
+    },
+    "list sorted by year desc": {
+      "commandName": "Project",
+      "commandLineArgs": "list /sort:\"year desc\""
+    },
+    "list sorted by year asc": {
+      "commandName": "Project",
+      "commandLineArgs": "list /sort:\"year\""
+    },
+    "list sorted by genre desc": {
+      "commandName": "Project",
+      "commandLineArgs": "list /sort:\"genre desc\""
+    },
+    "list sorted by genre asc": {
+      "commandName": "Project",
+      "commandLineArgs": "list /sort:\"genre\""
+    },
+    "list 20 rows": {
+      "commandName": "Project",
+      "commandLineArgs": "list /rows:20"
+    },
+    "filter by year 2012": {
+      "commandName": "Project",
+      "commandLineArgs": "list /year:2012"
+    },
+    "filter by genre scifi": {
+      "commandName": "Project",
+      "commandLineArgs": "list /genre:\"science fiction\""
+    },
+    "filter by title 'world'": {
+      "commandName": "Project",
+      "commandLineArgs": "list /title:\"world\""
+    },
+    "filter by actor 'paul'": {
+      "commandName": "Project",
+      "commandLineArgs": "list /actor:\"paul\""
+    },
+    "filter by actor 'paul', title contains 'the'": {
+      "commandName": "Project",
+      "commandLineArgs": "list /actor:\"paul\" /title:the"
+    },
+    "filter by actor 'paul', title contains 'the', year 2016": {
+      "commandName": "Project",
+      "commandLineArgs": "list /actor:\"paul\" /title:the /year:2016"
+    },
+    "list genres": {
+      "commandName": "Project",
+      "commandLineArgs": "genres"
+    },
+    "list genres sort desc": {
+      "commandName": "Project",
+      "commandLineArgs": "genres /desc"
+    },
+    "popular actors": {
+      "commandName": "Project",
+      "commandLineArgs": "popular"
+    },
+    "popular actors 50 rows": {
+      "commandName": "Project",
+      "commandLineArgs": "popular /rows:50"
+    },
+    "actor report": {
+      "commandName": "Project",
+      "commandLineArgs": "actor /name:\"steve carell\""
+    }
+  }
+}

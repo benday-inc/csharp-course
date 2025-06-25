@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\LinqLab.Api\LinqLab.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Benday.CommandsFramework" Version="4.9.0" />
+  </ItemGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackAsTool>True</PackAsTool>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>your-name-here</Authors>
+    <Copyright>2024</Copyright>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <Version>1.0.0</Version>
+    <Description>Movie Database Utility</Description>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <AssemblyName>movies</AssemblyName>
+  </PropertyGroup>
+</Project>
