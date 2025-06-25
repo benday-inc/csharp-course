@@ -1,4 +1,5 @@
 using Benday.CommandsFramework;
+using System.Runtime.InteropServices;
 
 namespace LinqLab.Api.Commands;
 
@@ -45,8 +46,91 @@ public class SearchCommand : AsynchronousCommand
 
         await SearchAsync(keyword, multithreaded);
     }
-    private Task SearchAsync(string keyword, bool multithreaded)
+    private async Task SearchAsync(string keyword, bool multithreaded)
     {
-        throw new NotImplementedException();
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+        var decades = new int[] { 1970, 1980, 1990, 2000, 2010, 2020 };
+
+        var results = new List<KeywordSearchResult>();
+
+        foreach (var decade in decades)
+        {
+            var decadeResult = await SearchAsync(keyword, decade);
+
+            if (decadeResult.Count > 0)
+            {
+                results.AddRange(decadeResult);
+            }
+        }
+
+        stopwatch.Stop();
+
+        if (results.Count == 0)
+        {
+            WriteLine("No results found.");            
+        }
+        else
+        {
+            WriteLine($"Found {results.Count} results for keyword '{keyword}':");
+            WriteLine("--------------------------------------------------");
+
+            foreach (var result in results)
+            {
+                WriteLine($"{result.MatchType}: {result.MatchDescription} ({result.Movie.Year})");
+            }
+        }
+
+        WriteLine("--------------------------------------------------");
+
+        WriteLine($"Search completed in {stopwatch.ElapsedMilliseconds} ms.");
+    }
+
+    private Task<List<KeywordSearchResult>> SearchAsync(string keyword, int decade)
+    {
+        var sortDescending = Arguments.GetBooleanValue("desc");
+
+        var reader = new MovieDataReader();
+
+        var movies = reader.GetMovies(decade);
+
+        var results = new List<KeywordSearchResult>();
+
+        var matchingMovies = movies
+            .Where(m => m.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        foreach (var movie in matchingMovies)
+        {
+            results.Add(new KeywordSearchResult
+            {
+                MatchType = "Title",
+                MatchDescription = movie.Title,
+                Movie = movie
+            });
+        }
+
+        var matchingMoviesByCast = movies
+            .Where(m => m.Cast.Any(c => c.Contains(keyword, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
+
+        foreach (var movie in matchingMoviesByCast)
+        {
+            var matchingCast = movie.Cast
+                .Where(c => c.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            foreach (var castMember in matchingCast)
+            {
+                results.Add(new KeywordSearchResult
+                {
+                    MatchType = "Cast",
+                    MatchDescription = $"{castMember} in {movie.Title}",
+                    Movie = movie
+                });
+            }
+        }
+
+        return Task.FromResult(results);
     }
 }

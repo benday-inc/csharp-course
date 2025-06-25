@@ -79,6 +79,10 @@
     "actor report": {
       "commandName": "Project",
       "commandLineArgs": "actor /name:\"steve carell\""
+    },
+    "search gary singlethreaded": {
+      "commandName": "Project",
+      "commandLineArgs": "search gary"
     }
   }
 }
