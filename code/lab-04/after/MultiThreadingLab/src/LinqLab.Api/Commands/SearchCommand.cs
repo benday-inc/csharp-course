@@ -132,7 +132,7 @@ public class SearchCommand : AsynchronousCommand
         return returnValues;
     }
 
-    private Task<List<KeywordSearchResult>> SearchAsync(string keyword, int decade)
+    private async Task<List<KeywordSearchResult>> SearchAsync(string keyword, int decade)
     {
         var sortDescending = Arguments.GetBooleanValue("desc");
 
@@ -148,12 +148,21 @@ public class SearchCommand : AsynchronousCommand
 
         foreach (var movie in matchingMovies)
         {
-            results.Add(new KeywordSearchResult
+            var result = new KeywordSearchResult
             {
                 MatchType = "Title",
                 MatchDescription = movie.Title,
                 Movie = movie
-            });
+            };
+
+            var isValid = await ValidationUtility.ValidateResult(result);
+
+            if (isValid == false)
+            {
+                continue; // Skip this result if validation fails
+            }
+
+            results.Add(result);            
         }
 
         var matchingMoviesByCast = movies
@@ -177,6 +186,6 @@ public class SearchCommand : AsynchronousCommand
             }
         }
 
-        return Task.FromResult(results);
+        return results;
     }
 }
