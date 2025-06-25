@@ -1,4 +1,5 @@
 using Benday.CommandsFramework;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 
 namespace LinqLab.Api.Commands;
@@ -46,33 +47,33 @@ public class SearchCommand : AsynchronousCommand
 
         await SearchAsync(keyword, multithreaded);
     }
+
     private async Task SearchAsync(string keyword, bool multithreaded)
     {
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
         var decades = new int[] { 1970, 1980, 1990, 2000, 2010, 2020 };
 
-        var results = new List<KeywordSearchResult>();
+        IEnumerable<KeywordSearchResult> results;
 
-        foreach (var decade in decades)
+        if (multithreaded == false)
         {
-            var decadeResult = await SearchAsync(keyword, decade);
-
-            if (decadeResult.Count > 0)
-            {
-                results.AddRange(decadeResult);
-            }
+            results = await SearchSingleThreaded(keyword, decades);
+        }
+        else
+        {
+            results = await SearchParallelAsync(keyword, decades);
         }
 
         stopwatch.Stop();
 
-        if (results.Count == 0)
+        if (results.Any() == false)
         {
-            WriteLine("No results found.");            
+            WriteLine("No results found.");
         }
         else
         {
-            WriteLine($"Found {results.Count} results for keyword '{keyword}':");
+            WriteLine($"Found {results.Count()} results for keyword '{keyword}':");
             WriteLine("--------------------------------------------------");
 
             foreach (var result in results)
@@ -83,7 +84,52 @@ public class SearchCommand : AsynchronousCommand
 
         WriteLine("--------------------------------------------------");
 
+        if (multithreaded == true)
+        {
+            WriteLine("Running in multithreaded mode.");
+        }
+        else
+        {
+            WriteLine("Running in single-threaded mode.");
+        }
+
         WriteLine($"Search completed in {stopwatch.ElapsedMilliseconds} ms.");
+    }
+
+    private async Task<IEnumerable<KeywordSearchResult>> SearchSingleThreaded(string keyword, int[] decades)
+    {
+        var results = new List<KeywordSearchResult>();
+        foreach (var decade in decades)
+        {
+            var decadeResult = await SearchAsync(keyword, decade);
+
+            if (decadeResult.Count > 0)
+            {
+                results.AddRange(decadeResult);
+            }
+        }
+
+        return results;
+    }
+
+    private async Task<IEnumerable<KeywordSearchResult>> SearchParallelAsync(
+        string keyword,
+        int[] decades,
+        CancellationToken token = default)
+    {
+        var returnValues = new ConcurrentBag<KeywordSearchResult>();
+
+        await Parallel.ForEachAsync(decades, token, async (decade, token) =>
+        {
+            var decadeResult = await SearchAsync(keyword, decade).ConfigureAwait(false);
+
+            foreach (var match in decadeResult)
+            {
+                returnValues.Add(match);
+            }
+        });
+
+        return returnValues;
     }
 
     private Task<List<KeywordSearchResult>> SearchAsync(string keyword, int decade)

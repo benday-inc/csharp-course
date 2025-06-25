@@ -83,6 +83,10 @@
     "search gary singlethreaded": {
       "commandName": "Project",
       "commandLineArgs": "search gary"
+    },
+    "search gary multithreaded": {
+      "commandName": "Project",
+      "commandLineArgs": "search gary /multithreaded"
     }
   }
 }
