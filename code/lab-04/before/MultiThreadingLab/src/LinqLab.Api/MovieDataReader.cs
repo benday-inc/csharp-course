@@ -6,18 +6,30 @@ public class MovieDataReader
 {
     private string FindDataDirectory()
     {
-        var directory = Directory.GetCurrentDirectory();
+        var assemblyLocation = typeof(MovieDataReader).Assembly.Location ??
+            throw new InvalidOperationException("could not find assembly location");
 
-        while (!Directory.Exists(Path.Combine(directory, "data")))
+        var directory = Path.GetDirectoryName(assemblyLocation) ??
+            throw new InvalidOperationException("Could not get directory from assembly location.");
+
+        var directoryToCheck = Path.Combine(directory, "data");
+
+        Console.WriteLine($"{nameof(FindDataDirectory)}(): Checking {directoryToCheck}...");
+
+        while (!Directory.Exists(directoryToCheck))
         {
-            directory = Path.GetFullPath(Path.Combine(directory, ".."));
-            if (directory.Length < 5)
+            directoryToCheck = Path.GetFullPath(Path.Combine(directory, ".."));
+            if (directoryToCheck.Length < 5)
             {
                 throw new DirectoryNotFoundException("Could not find the data directory.");
             }
+
+            Console.WriteLine($"{nameof(FindDataDirectory)}(): Checking {directoryToCheck}...");
         }
 
-        return Path.Combine(directory, "data");
+        Console.WriteLine($"{nameof(FindDataDirectory)}(): Found data directory at {directoryToCheck}");
+
+        return directoryToCheck;
     }
 
     private bool IsValidDecade(int year)
