@@ -77,20 +77,30 @@ class Program
 
     static void ProcessFile(string filePath, ConcurrentDictionary<string, int> wordCounts)
     {
-        Console.WriteLine($"Processing {Path.GetFileName(filePath)}...");
-
-        var text = File.ReadAllText(filePath);
-        var words = text.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-
-        foreach (var word in words)
+        try
         {
-            wordCounts.AddOrUpdate(
-                word,          // Key
-                1,             // Value if the key does not exist
-                (_, count) => count + 1 // Update logic if the key exists
-            );
-        }
+            Console.WriteLine($"Processing {Path.GetFileName(filePath)}...");
 
-        Console.WriteLine($"Finished processing {Path.GetFileName(filePath)}.");
+            foreach (var line in File.ReadLines(filePath))
+            {
+                var words = line.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var word in words)
+                {
+                    var wordToLower = word.ToLower();
+                    wordCounts.AddOrUpdate(
+                        wordToLower,          // Key
+                        1,             // Value if the key does not exist
+                        (_, count) => count + 1 // Update logic if the key exists
+                    );
+                }
+            }
+
+            Console.WriteLine($"Finished processing {Path.GetFileName(filePath)}.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error processing {filePath}: {ex.Message}");
+        }
     }
 }
