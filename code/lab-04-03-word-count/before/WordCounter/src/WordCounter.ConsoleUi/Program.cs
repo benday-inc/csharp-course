@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 class Program
 {
-    static async Task Main(string[] args)
+    public static async Task Main(string[] args)
     {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        Console.WriteLine("Starting word count application...");
+
         var wordCounts = new ConcurrentDictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         // get the dir for the assembly
@@ -43,13 +46,33 @@ class Program
 
         await Task.WhenAll(tasks);
 
+        stopwatch.Stop();
+        
         Console.WriteLine("Word count completed. Results:");
 
-        // Display results
-        foreach (var kvp in wordCounts.OrderByDescending(kv => kv.Value))
+        var totalWords = wordCounts.Count;
+        Console.WriteLine($"Total unique words counted: {totalWords}");
+        if (totalWords == 0)
         {
-            Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            Console.WriteLine("No words were counted.");
+            return;
         }
+
+        // most popular word
+        var mostPopularWord = wordCounts.OrderByDescending(kv => kv.Value).FirstOrDefault();
+
+        Console.WriteLine($"Most popular word: '{mostPopularWord.Key}' with {mostPopularWord.Value} occurrences.");
+
+        // top 20 words
+
+        var top20Words = wordCounts.OrderByDescending(kv => kv.Value).Take(20);
+        Console.WriteLine("Top 20 words:");
+        foreach (var kv in top20Words)
+        {
+            Console.WriteLine($"'{kv.Key}': {kv.Value}");
+        }
+
+        Console.WriteLine($"Word count completed in {stopwatch.ElapsedMilliseconds} ms.");
     }
 
     static void ProcessFile(string filePath, ConcurrentDictionary<string, int> wordCounts)
