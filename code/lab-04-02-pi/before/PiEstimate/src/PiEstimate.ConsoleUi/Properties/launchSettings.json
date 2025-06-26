@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "estimate pi (single-threaded)": {
+      "commandName": "Project"
+    },
+    "estimate pi (multi-threaded)": {
+      "commandName": "Project",
+      "commandLineArgs": "/multithreaded"
+    }
+  }
+}
