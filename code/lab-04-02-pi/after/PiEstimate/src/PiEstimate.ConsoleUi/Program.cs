@@ -3,12 +3,20 @@ using System.Diagnostics;
 
 class Program
 {
-    static void Main(string[] args)
+static void Main(string[] args)
+{
+    if (args.Contains("/multithreaded") == true)
     {
+        Console.WriteLine("Multithreaded mode is not implemented in this example.");
+        return;
+    }
+    else
+    {
+
         // Default to 10 million samples unless overridden by first CLI arg
         int iterations = args.Length > 0 && int.TryParse(args[0], out var n)
-                         ? n
-                         : 10_000_000;
+                        ? n
+                        : 10_000_000;
 
         Console.WriteLine($"Samples : {iterations:N0}");
 
@@ -20,6 +28,7 @@ class Program
         Console.WriteLine($"Elapsed                : {stopwatch.Elapsed.TotalSeconds:F2} s");
         Console.WriteLine($"Guess Error from Actual: {Math.Abs(Math.PI - estimate):F6}");
     }
+}
 
     static double EstimatePiSequential(int iterations)
     {
