@@ -6,6 +6,10 @@
     "estimate pi (multi-threaded)": {
       "commandName": "Project",
       "commandLineArgs": "/multithreaded"
+    },
+    "estimate pi (two processors)": {
+      "commandName": "Project",
+      "commandLineArgs": "/multithreaded /degree:2"
     }
   }
 }
