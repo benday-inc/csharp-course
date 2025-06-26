@@ -23,35 +23,17 @@ By the end of this lab, you will:
 
 ---
 
-## Step 1: Setup the Project
+## Step 1: Load the Project
 
-1. Open Visual Studio and create a new **Console App** project.
-2. Name the project `ConcurrentDictionaryLab`.
+1. Open Visual Studio
+2. Load the project `WordCounter-before.sln` in the `lab-04-03-word-count` folder.
 
----
-
-## Step 2: Add Sample Text Files
-
-1. Create a folder named `SampleTexts` in the project directory.
-2. Add a few `.txt` files with sample text. For example:
-   - `file1.txt`:
-     ```
-     Hello world. Welcome to the world of C# programming.
-     ```
-   - `file2.txt`:
-     ```
-     C# makes concurrent programming fun and efficient.
-     ```
-   - `file3.txt`:
-     ```
-     The world is full of opportunities to learn C#.
-     ```
 
 ---
 
-## Step 3: Create the Word Counter
+## Step 2: Create the Word Counter
 
-1. Add the following code to `Program.cs`:
+1. In the `WordCounter.ConsoleUi` project, add the following code to `Program.cs`:
 
    ```csharp
    using System;
@@ -59,39 +41,85 @@ By the end of this lab, you will:
    using System.IO;
    using System.Linq;
    using System.Threading.Tasks;
-
+   
    class Program
    {
-       static async Task Main(string[] args)
+       public static async Task Main(string[] args)
        {
+           var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+           Console.WriteLine("Starting word count application...");
+   
            var wordCounts = new ConcurrentDictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-
+   
+           // get the dir for the assembly
+   
+           var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ??
+               throw new InvalidOperationException("Could not get executing assembly location");
+   
+           Console.WriteLine($"Executing assembly location: {assemblyDir}");
+                  
+           var dataDir = Path.Combine(assemblyDir, "data");
+   
+           if (!Directory.Exists(dataDir))
+           {
+               Console.WriteLine($"Data directory '{dataDir}' does not exist.");
+               return;
+           }
+   
            // Get all text files in the SampleTexts directory
-           var textFiles = Directory.GetFiles("SampleTexts", "*.txt");
-
+           var textFiles = Directory.GetFiles(dataDir, "*.txt");
+   
+           if (textFiles.Length == 0)
+           {
+               Console.WriteLine("No text files found in the data directory.");
+               return;
+           }
+   
+           Console.WriteLine($"Found {textFiles.Length} text files in the data directory.");
+   
            Console.WriteLine("Starting word count...");
-
+   
            // Process files concurrently
            var tasks = textFiles.Select(file => Task.Run(() => ProcessFile(file, wordCounts)));
-
+   
            await Task.WhenAll(tasks);
-
+   
+           stopwatch.Stop();
+           
            Console.WriteLine("Word count completed. Results:");
-
-           // Display results
-           foreach (var kvp in wordCounts.OrderByDescending(kv => kv.Value))
+   
+           var totalWords = wordCounts.Count;
+           Console.WriteLine($"Total unique words counted: {totalWords}");
+           if (totalWords == 0)
            {
-               Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+               Console.WriteLine("No words were counted.");
+               return;
            }
+   
+           // most popular word
+           var mostPopularWord = wordCounts.OrderByDescending(kv => kv.Value).FirstOrDefault();
+   
+           Console.WriteLine($"Most popular word: '{mostPopularWord.Key}' with {mostPopularWord.Value} occurrences.");
+   
+           // top 20 words
+   
+           var top20Words = wordCounts.OrderByDescending(kv => kv.Value).Take(20);
+           Console.WriteLine("Top 20 words:");
+           foreach (var kv in top20Words)
+           {
+               Console.WriteLine($"'{kv.Key}': {kv.Value}");
+           }
+   
+           Console.WriteLine($"Word count completed in {stopwatch.ElapsedMilliseconds} ms.");
        }
-
+   
        static void ProcessFile(string filePath, ConcurrentDictionary<string, int> wordCounts)
        {
            Console.WriteLine($"Processing {Path.GetFileName(filePath)}...");
-
+   
            var text = File.ReadAllText(filePath);
            var words = text.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-
+   
            foreach (var word in words)
            {
                wordCounts.AddOrUpdate(
@@ -100,7 +128,7 @@ By the end of this lab, you will:
                    (_, count) => count + 1 // Update logic if the key exists
                );
            }
-
+   
            Console.WriteLine($"Finished processing {Path.GetFileName(filePath)}.");
        }
    }
@@ -125,21 +153,23 @@ By the end of this lab, you will:
    static void ProcessFile(string filePath, ConcurrentDictionary<string, int> wordCounts)
    {
        Console.WriteLine($"Processing {Path.GetFileName(filePath)}...");
-
+   
        foreach (var line in File.ReadLines(filePath))
        {
            var words = line.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-
+   
            foreach (var word in words)
            {
+              var wordToLower = word.ToLower();
+             
                wordCounts.AddOrUpdate(
-                   word,          // Key
+                   wordToLower,          // Key
                    1,             // Value if the key does not exist
                    (_, count) => count + 1 // Update logic if the key exists
                );
            }
        }
-
+   
        Console.WriteLine($"Finished processing {Path.GetFileName(filePath)}.");
    }
    ```
@@ -156,21 +186,22 @@ By the end of this lab, you will:
        try
        {
            Console.WriteLine($"Processing {Path.GetFileName(filePath)}...");
-
+   
            foreach (var line in File.ReadLines(filePath))
            {
                var words = line.Split(new[] { ' ', '.', ',', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-
+   
                foreach (var word in words)
                {
+                   var wordToLower = word.ToLower();
                    wordCounts.AddOrUpdate(
-                       word,          // Key
+                       wordToLower,          // Key
                        1,             // Value if the key does not exist
                        (_, count) => count + 1 // Update logic if the key exists
                    );
                }
            }
-
+   
            Console.WriteLine($"Finished processing {Path.GetFileName(filePath)}.");
        }
        catch (Exception ex)
@@ -181,6 +212,43 @@ By the end of this lab, you will:
    ```
 
 ---
+
+## Step 7: Make it Single-Threaded
+
+Let's see how much performance boost we get from being multi-threaded. 
+
+* Run the app using **CTRL-F5** (no debugging) and make a note of how long it takes to run.
+
+Next let's modify the file to make it run single-threaded.
+
+* Find the `await Task.WhenAll(tasks)` call
+* Comment that line out and replace it with a standard `foreach`
+
+```csharp
+var tasks = textFiles.Select(file => Task.Run(() => ProcessFile(file, wordCounts)));
+
+var runMultithreaded = false;
+
+if (runMultithreaded == true)
+{
+    await Task.WhenAll(tasks);
+}
+else
+{   
+    foreach (var task in tasks)
+    {
+        await task;
+    }
+}        
+
+stopwatch.Stop();
+```
+
+
+
+* Run the application using **CTRL-F5** and compare the run time
+
+How did it do?
 
 ## Summary
 
