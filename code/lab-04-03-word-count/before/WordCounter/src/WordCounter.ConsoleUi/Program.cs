@@ -44,7 +44,19 @@ class Program
         // Process files concurrently
         var tasks = textFiles.Select(file => Task.Run(() => ProcessFile(file, wordCounts)));
 
-        await Task.WhenAll(tasks);
+        var runMultithreaded = false;
+
+        if (runMultithreaded == true)
+        {
+            await Task.WhenAll(tasks);
+        }
+        else
+        {   
+            foreach (var task in tasks)
+            {
+                await task;
+            }
+        }        
 
         stopwatch.Stop();
         
