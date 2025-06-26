@@ -12,13 +12,13 @@ class Program
 
         Console.WriteLine($"Samples : {iterations:N0}");
 
-        var sw = Stopwatch.StartNew();
-        double estimate = EstimatePiSequential(iterations);
-        sw.Stop();
+        var stopwatch = Stopwatch.StartNew();
+        var estimate = EstimatePiSequential(iterations);
+        stopwatch.Stop();
 
         Console.WriteLine($"π ≈ {estimate:F6}");
-        Console.WriteLine($"Elapsed: {sw.Elapsed.TotalSeconds:F2} s");
-        Console.WriteLine($"Error  : {Math.Abs(Math.PI - estimate):F6}");
+        Console.WriteLine($"Elapsed                : {stopwatch.Elapsed.TotalSeconds:F2} s");
+        Console.WriteLine($"Guess Error from Actual: {Math.Abs(Math.PI - estimate):F6}");
     }
 
     static double EstimatePiSequential(int iterations)
@@ -35,6 +35,6 @@ class Program
                 inside++;
         }
 
-        return 4.0 * inside / iterations;
+        return (4.0 * inside) / iterations;
     }
 }
