@@ -1,0 +1,15 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomTimerLab", "CustomTimerLab\CustomTimerLab.csproj", "{D9738A72-38D5-4A7D-96C3-60F87C28A97F}"
+EndProject
+Global
+    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+        Debug|Any CPU = Debug|Any CPU
+    EndGlobalSection
+    GlobalSection(ProjectConfigurationPlatforms) = postSolution
+        {D9738A72-38D5-4A7D-96C3-60F87C28A97F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {D9738A72-38D5-4A7D-96C3-60F87C28A97F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+    EndGlobalSection
+EndGlobal
